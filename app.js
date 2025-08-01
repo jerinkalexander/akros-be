@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 
 const sendOtpRoute = require('./routes/sendOtpRoute');      
 const verifyOtpRoute = require('./routes/verifyOtpRoute');
+const userProfileRoute = require('./routes/userProfileRoute');
+
 
 const sequelize = require('./config/db');
 const app = express();
@@ -14,6 +16,7 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use('/api', sendOtpRoute);      
 app.use('/api', verifyOtpRoute);  
+app.use('/api', userProfileRoute);
 
 const PORT = 3000;
 

@@ -38,8 +38,10 @@ router.post('/verify-otp', async (req, res) => {
       return res.status(410).json({ message: 'OTP expired.' });
     }
 
-    // ✅ Success
-    res.status(200).json({ message: 'OTP verified successfully.' });
+    res.status(200).json({
+      message: 'OTP verified successfully.',
+      phoneNumberId: phone.id,
+    });
   } catch (error) {
     console.error('OTP verification error:', error);
     res.status(500).json({ message: 'Internal server error.' });
