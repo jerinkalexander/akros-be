@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const OTP = require('../models/Otp');
-const PhoneNumber = require('../models/PhoneNumber');
+const OTP = require('../../models/app/Otp');
+const PhoneNumber = require('../../models/app/PhoneNumber');
 
 router.post('/verify-otp', async (req, res) => {
   const { phoneNumber, otp } = req.body;

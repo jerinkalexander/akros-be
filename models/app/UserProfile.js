@@ -1,6 +1,6 @@
 // models/UserProfile.js
 const { DataTypes } = require('sequelize');
-const sequelize = require('../config/db');
+const sequelize = require('../../config/db');
 const PhoneNumber = require('./PhoneNumber');
 
 const UserProfile = sequelize.define('UserProfile', {
