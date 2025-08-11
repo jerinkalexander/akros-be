@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-const PhoneNumber = require('../models/PhoneNumber');
-const OTP = require('../models/Otp');
+const PhoneNumber = require('../../models/app/PhoneNumber');
+const OTP = require('../../models/app/Otp');
 
 const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString();
 
