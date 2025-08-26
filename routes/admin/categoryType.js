@@ -23,6 +23,21 @@ router.get('/', async (req, res) => {
   }
 });
 
+// GET one category type by ID
+router.get('/:id', async (req, res) => {
+  try {
+    const categoryType = await CategoryType.findByPk(req.params.id);
+
+    if (!categoryType) {
+      return res.status(404).json({ error: 'Category type not found' });
+    }
+
+    res.json(categoryType);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Update a category type by ID
 router.put('/:id', async (req, res) => {
   try {
