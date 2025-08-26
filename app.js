@@ -6,10 +6,14 @@ const bodyParser = require('body-parser');
 const sendOtpRoute = require('./routes/app/sendOtpRoute');      
 const verifyOtpRoute = require('./routes/app/verifyOtpRoute');
 const userProfileRoute = require('./routes/app/userProfileRoute');
+const entityAppRoutes = require('./routes/app/entityRoute');
+const bookingAppRoute = require('./routes/app/bookingRoute');
 
 //Admin routes
 const categoryTypeRoutes = require('./routes/admin/categoryType');
 const entityRoutes = require('./routes/admin/entity');
+const bookingRoute = require('./routes/admin/booking');
+
 
 
 const sequelize = require('./config/db');
@@ -24,10 +28,13 @@ app.use(bodyParser.json());
 app.use('/api', sendOtpRoute);      
 app.use('/api', verifyOtpRoute);  
 app.use('/api', userProfileRoute);
+app.use('/api', entityAppRoutes);
+app.use('/api', bookingAppRoute);
 
 // Admin routes
 app.use('/admin/category-types', categoryTypeRoutes);
-app.use('/admin/entity', entityRoutes);
+app.use('/admin/entities', entityRoutes);
+app.use('/admin/bookings', bookingRoute);
 
 const PORT = 3000;
 
