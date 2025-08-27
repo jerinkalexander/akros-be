@@ -1,35 +1,20 @@
-name: Deploy to Droplet
+name: Deploy via SSH
 
 on:
-  pull_request:
-    types: [closed]
+  push:
     branches:
       - main
-    if: github.event.pull_request.merged == true
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
-      - name: Deploy with SSH
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SSH_KEY }} 
-          passphrase: ${{ secrets.PASSPHRASE }}
-          script: |
-            # Navigate to your application directory
-            cd C:\workspace\parkmate-be # Replace with your application's path
-
-            # Pull the latest code from the main branch
-            git pull origin main
-
-            # Add any other commands to build, install, or restart your application
-            # For example:
-            # npm install
-            # npm run build
-            # sudo systemctl restart your_service_name
+      - name: Connect and deploy
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'ls'
