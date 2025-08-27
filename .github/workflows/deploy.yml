@@ -1,35 +1,69 @@
-name: Deploy to Droplet
+name: Deploy to DigitalOcean
 
 on:
-  pull_request:
-    types: [closed]
-    branches:
-      - main
-    if: github.event.pull_request.merged == true
+  push:
+    branches: [main]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
-      - name: Deploy with SSH
-        uses: appleboy/ssh-action@v1.0.0
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
         with:
-          host: ${{ 178.128.108.42 }}
-          username: ${{ root }}
-          key: ${{ ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC1SYp2jNGTCfNv+ZdWeR+8V9lj1ZagLrw9yR8cnECjB github-actions-deploy }}
-          passphrase: ${{ 12345678 }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known_hosts: ${{ secrets.DROPLET_IP }}
+
+      - name: Deploy to Droplet
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.DROPLET_IP }}
+          username: root
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            # Navigate to your application directory
-            cd C:\workspace\parkmate-be # Replace with your application's path
-
-            # Pull the latest code from the main branch
+            # Set up environment variables
+            export DB_PASSWORD="${{ secrets.DB_PASSWORD }}"
+            export NODE_ENV=production
+            
+            # Clone or update repository
+            if [ ! -d "/root/app" ]; then
+              git clone https://github.com/${{ github.repository }}.git /root/app
+            fi
+            
+            cd /root/app
             git pull origin main
-
-            # Add any other commands to build, install, or restart your application
-            # For example:
-            # npm install
-            # npm run build
-            # sudo systemctl restart your_service_name
+            
+            # Set up environment file
+            echo "DB_HOST=localhost" > .env
+            echo "DB_USER=appuser" >> .env
+            echo "DB_PASSWORD=$DB_PASSWORD" >> .env
+            echo "DB_NAME=appdb" >> .env
+            echo "NODE_ENV=production" >> .env
+            echo "PORT=3000" >> .env
+            
+            # Install dependencies
+            npm install --production
+            
+            # Set up MySQL
+            sudo apt update
+            sudo apt install mysql-server -y
+            
+            # Configure MySQL
+            sudo mysql -e "CREATE DATABASE IF NOT EXISTS appdb;"
+            sudo mysql -e "CREATE USER IF NOT EXISTS 'appuser'@'localhost' IDENTIFIED BY '$DB_PASSWORD';"
+            sudo mysql -e "GRANT ALL PRIVILEGES ON appdb.* TO 'appuser'@'localhost';"
+            sudo mysql -e "FLUSH PRIVILEGES;"
+            
+            # Install PM2 if not installed
+            if ! command -v pm2 &> /dev/null; then
+              npm install -g pm2
+            fi
+            
+            # Start or restart application
+            pm2 delete all || true
+            pm2 start npm --name "app" -- start
+            pm2 save
+            pm2 startup
