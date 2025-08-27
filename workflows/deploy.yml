@@ -17,10 +17,10 @@ jobs:
       - name: Deploy with SSH
         uses: appleboy/ssh-action@v1.0.0
         with:
-          host: ${{ 178.128.108.42 }}
-          username: ${{ root }}
-          key: ${{ ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC1SYp2jNGTCfNv+ZdWeR+8V9lj1ZagLrw9yR8cnECjB github-actions-deploy }}
-          passphrase: ${{ 12345678 }}
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }} 
+          passphrase: ${{ secrets.PASSPHRASE }}
           script: |
             # Navigate to your application directory
             cd C:\workspace\parkmate-be # Replace with your application's path
