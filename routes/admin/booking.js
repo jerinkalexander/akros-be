@@ -3,7 +3,7 @@ const router = express.Router();
 const Booking = require('../../models/app/Booking');
 const Entity = require('../../models/admin/Entity');
 
-// ✅ Admin: Get all bookings
+// ✅ Admin: Get all bookings //
 router.get('/', async (req, res) => {
   try {
     const bookings = await Booking.findAll({
