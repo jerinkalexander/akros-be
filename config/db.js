@@ -10,6 +10,8 @@ const sequelize = new Sequelize(
     logging: false,
     host: process.env.DB_HOST,
     dialect: process.env.DB_DIALECT,
+    port: process.env.DB_PORT // Add port here with default fallback
+
   }
 );
 

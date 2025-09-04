@@ -4,8 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js"
+    "start": "pm2 start ecosystem.config.js",
+    "stop": "pm2 stop my-app",
+    "restart": "pm2 restart my-app",
+    "reload": "pm2 reload my-app",
+    "delete": "pm2 delete my-app",
+    "logs": "pm2 logs my-app",
+    "status": "pm2 status",
+    "dev": "NODE_ENV=development nodemon server.js"
   },
   "keywords": [],
   "author": "",
@@ -16,7 +22,8 @@
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
     "mysql2": "^3.14.2",
-    "sequelize": "^6.37.7"
+    "sequelize": "^6.37.7",
+    "pm2": "^6.0.10"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"
