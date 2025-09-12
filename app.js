@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const authenticateToken = require('./middleware/auth');
 
 //App routes
 const sendOtpRoute = require('./routes/app/sendOtpRoute');      
@@ -24,7 +25,12 @@ app.use(express.json());
 
 app.use(bodyParser.json());
 
-//App routes
+
+// App routes that do NOT require token
+app.use('/api', sendOtpRoute);
+
+// Token verification for all other /api routes
+app.use('/api', authenticateToken);
 app.use('/api', sendOtpRoute);      
 app.use('/api', verifyOtpRoute);  
 app.use('/api', userProfileRoute);
@@ -32,16 +38,12 @@ app.use('/api', entityAppRoutes);
 app.use('/api', bookingAppRoute);
 
 // Admin routes
+app.use('/admin', authenticateToken);
 app.use('/admin/category-types', categoryTypeRoutes);
 app.use('/admin/entities', entityRoutes);
 app.use('/admin/bookings', bookingRoute);
 
 const PORT = 3000;
 
-// Sync database and start server
-sequelize.sync({ alter: true }).then(() => {
-  console.log('Database synced');
-  app.listen(PORT, () => console.log(`Server is running on http://localhost:${PORT}`));
-}).catch(err => {
-  console.error('Database sync failed:', err);
-});
+// Start server (no sync)
+app.listen(PORT, () => console.log(`Server is running on http://localhost:${PORT}`));
