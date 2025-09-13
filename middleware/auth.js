@@ -1,8 +1,16 @@
-module.exports = (req, res, next) => {
-  const userId = req.header('x-user-id'); // send phone_numbers.id via header
-  if (!userId) {
-    return res.status(401).json({ error: 'Unauthorized: user ID required' });
-  }
-  req.user = { id: parseInt(userId) };
-  next();
-};
+const jwt = require('jsonwebtoken');
+const SECRET = 'your_secret_key'; // Use env variable in production
+
+function authenticateToken(req, res, next) {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  if (!token) return res.status(401).json({ error: 'Token required' });
+
+  jwt.verify(token, SECRET, (err, user) => {
+    if (err) return res.status(403).json({ error: 'Invalid token' });
+    req.user = user;
+    next();
+  });
+}
+
+module.exports = authenticateToken;
