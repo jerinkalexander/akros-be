@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const SECRET = 'your_secret_key'; // Use env variable in production
+const SECRET = process.env.JWT_SECRET_KEY; // Use env variable in production
 
 function generateToken(payload) {
   return jwt.sign(payload, SECRET, { expiresIn: '1d' });

@@ -9,11 +9,11 @@ module.exports = {
         primaryKey: true,
         allowNull: false
       },
-      entityId: {
+      shopId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'entities',
+          model: 'shops',
           key: 'id'
         }
       },
@@ -21,7 +21,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'phone_numbers',
+          model: 'users',
           key: 'id'
         }
       },

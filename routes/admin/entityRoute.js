@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const Entity = require('../../models/admin/Entity');
+const Shop = require('../../models/admin/Shop');
 const CategoryType = require('../../models/admin/CategoryType');
 
-// ✅ CREATE Entity
+// ✅ CREATE Shop
 router.post('/', async (req, res) => {
   try {
     const {
@@ -29,7 +29,7 @@ router.post('/', async (req, res) => {
       return res.status(404).json({ error: 'Category type not found' });
     }
 
-    const entity = await Entity.create({
+    const shop = await Shop.create({
       name,
       categoryTypeId,
       address1,
@@ -47,86 +47,109 @@ router.post('/', async (req, res) => {
       closedOn,
     });
 
-    res.status(201).json(entity);
+    res.status(201).json(shop);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 });
 
-// ✅ UPDATE Entity
+// ✅ UPDATE Shop
 router.put('/:id', async (req, res) => {
   try {
     const id = req.params.id;
-    const entity = await Entity.findByPk(id);
+    const shop = await Shop.findByPk(id);
 
-    if (!entity) {
-      return res.status(404).json({ error: 'Entity not found' });
+    if (!shop) {
+      return res.status(404).json({ error: 'Shop not found' });
     }
 
-    await entity.update(req.body);
-    res.json(entity);
+    await shop.update(req.body);
+    res.json(shop);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 });
 
-// ✅ GET Single Entity
+// ✅ GET Single Shop
 router.get('/:id', async (req, res) => {
   try {
-    const entity = await Entity.findByPk(req.params.id, {
+    const shop = await Shop.findByPk(req.params.id, {
       include: [{ model: CategoryType }]
     });
 
-    if (!entity) {
-      return res.status(404).json({ error: 'Entity not found' });
+    if (!shop) {
+      return res.status(404).json({ error: 'Shop not found' });
     }
 
-    res.json(entity);
+    res.json(shop);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// ✅ LIST All Entities
+// ✅ LIST All Shops with Pagination and Search
 router.get('/', async (req, res) => {
   try {
-    const entities = await Entity.findAll({
+    // Pagination params
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const offset = (page - 1) * limit;
+
+    // Search param
+    const search = req.query.search || '';
+
+    // Build where clause for search
+    const where = search
+      ? {
+          name: { [require('sequelize').Op.like]: `%${search}%` }
+        }
+      : {};
+
+    const { count, rows: shops } = await Shop.findAndCountAll({
+      where,
       include: [{ model: CategoryType }],
-      order: [['createdAt', 'DESC']]
+      order: [['createdAt', 'DESC']],
+      limit,
+      offset
     });
 
-    res.json(entities);
+    res.json({
+      total: count,
+      page,
+      pageSize: limit,
+      shops
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// ✅ LIST Entities by CategoryType
+// ✅ LIST Shops by CategoryType
 router.get('/category/:categoryTypeId', async (req, res) => {
   try {
     const { categoryTypeId } = req.params;
-    const entities = await Entity.findAll({
+    const shops = await Shop.findAll({
       where: { categoryTypeId },
       include: [{ model: CategoryType }]
     });
 
-    res.json(entities);
+    res.json(shops);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// ✅ DELETE Entity
+// ✅ DELETE Shop
 router.delete('/:id', async (req, res) => {
   try {
-    const entity = await Entity.findByPk(req.params.id);
+    const shop = await Shop.findByPk(req.params.id);
 
-    if (!entity) {
-      return res.status(404).json({ error: 'Entity not found' });
+    if (!shop) {
+      return res.status(404).json({ error: 'Shop not found' });
     }
 
-    await entity.destroy();
-    res.json({ message: 'Entity deleted successfully' });
+    await shop.destroy();
+    res.json({ message: 'Shop deleted successfully' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

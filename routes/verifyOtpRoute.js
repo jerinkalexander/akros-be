@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const OTP = require('../../models/app/Otp');
-const PhoneNumber = require('../../models/app/PhoneNumber');
-const { generateToken } = require('../../utils/jwt');
+const OTP = require('../models/app/Otp');
+const User = require('../models/User');
+const UserToken = require('../models/UserToken');
+const { generateToken } = require('../utils/jwt');
 
 router.post('/verify-otp', async (req, res) => {
   const { phoneNumber, otp } = req.body;
@@ -13,15 +14,15 @@ router.post('/verify-otp', async (req, res) => {
 
   try {
     // Find phone number
-    const phone = await PhoneNumber.findOne({ where: { number: phoneNumber } });
-    if (!phone) {
+    const user = await User.findOne({ where: { number: phoneNumber } });
+    if (!user) {
       return res.status(404).json({ message: 'Phone number not found' });
     }
 
     // Find OTP
     const otpRecord = await OTP.findOne({
       where: {
-        phoneNumberId: phone.id,
+        userId: user.id,
         otp,
         expiresAt: { [require('sequelize').Op.gt]: new Date() }
       }
@@ -32,7 +33,10 @@ router.post('/verify-otp', async (req, res) => {
     }
 
     // Generate JWT token
-    const token = generateToken({ userId: phone.id, phoneNumber: phone.number });
+    const token = generateToken({ userId: user.id, phoneNumber: user.number });
+
+    // Save token in user_tokens table
+    await UserToken.create({ userId: user.id, token });
 
     res.json({ message: 'OTP verified successfully', token });
   } catch (error) {

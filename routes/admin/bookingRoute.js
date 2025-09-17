@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Booking = require('../../models/app/Booking');
-const Entity = require('../../models/admin/Entity');
+const Entity = require('../../models/admin/Shop');
 
 // ✅ Admin: Get all bookings //
 router.get('/', async (req, res) => {

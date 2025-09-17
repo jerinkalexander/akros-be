@@ -2,17 +2,20 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('phone_numbers', {
+    await queryInterface.createTable('user_tokens', {
       id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false
       },
-      number: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true
+      userId: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+      },
+      token: {
+        type: Sequelize.TEXT,
+        allowNull: false
       },
       createdAt: {
         type: Sequelize.DATE,
@@ -26,6 +29,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('phone_numbers');
+    await queryInterface.dropTable('user_tokens');
   }
 };
