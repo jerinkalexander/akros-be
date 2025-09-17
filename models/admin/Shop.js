@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../../config/db');
 const CategoryType = require('./CategoryType');
 
-const Entity = sequelize.define('Entity', {
+const Shop = sequelize.define('Shop', {
   name: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -55,12 +55,12 @@ const Entity = sequelize.define('Entity', {
     type: DataTypes.TEXT, // Assuming multiple days as comma-separated string
   },
 }, {
-  tableName: 'entities',
+  tableName: 'shops',
   timestamps: true,
 });
 
 // Association
-Entity.belongsTo(CategoryType, { foreignKey: 'categoryTypeId' });
-CategoryType.hasMany(Entity, { foreignKey: 'categoryTypeId' });
+Shop.belongsTo(CategoryType, { foreignKey: 'categoryTypeId' });
+CategoryType.hasMany(Shop, { foreignKey: 'categoryTypeId' });
 
-module.exports = Entity;
+module.exports = Shop;

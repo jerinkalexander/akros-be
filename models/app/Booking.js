@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../../config/db');
-const Entity = require('../admin/Entity');
-const PhoneNumber = require('./PhoneNumber');
+const Entity = require('../admin/Shop');
+const PhoneNumber = require('../User');
 
 const Booking = sequelize.define('Booking', {
   entityId: {

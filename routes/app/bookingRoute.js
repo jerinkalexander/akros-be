@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Booking = require('../../models/app/Booking');
-const Entity = require('../../models/admin/Entity');
+const Entity = require('../../models/admin/Shop');
 const auth = require('../../middleware/auth'); // Sets req.user (e.g., phone_numbers.id)
 
 
@@ -19,7 +19,7 @@ router.post('/bookings', auth, async (req, res) => {
     // Create booking with logged-in user's phone_number ID
     const booking = await Booking.create({
       entityId,
-      userId: req.user.id,  // userId is phone_numbers.id
+      userId: req.user.phoneId, // userId is phone_numbers.id
       userName,
       userContact,
       bookingDate,
@@ -38,7 +38,7 @@ router.post('/bookings', auth, async (req, res) => {
 router.get('/bookings', auth, async (req, res) => {
   try {
     const bookings = await Booking.findAll({
-      where: { userId: req.user.id },
+      where: { userId: req.user.userId },
       include: [{ model: Entity }],
       order: [['createdAt', 'DESC']]
     });
@@ -56,7 +56,7 @@ router.get('/bookings/:id', auth, async (req, res) => {
     const booking = await Booking.findOne({
       where: {
         id: req.params.id,
-        userId: req.user.id   // Ensures booking belongs to this phone_number
+        userId: req.user.userId   // Ensures booking belongs to this phone_number
       },
       include: [{ model: Entity }]
     });
@@ -75,7 +75,7 @@ router.get('/bookings/:id', auth, async (req, res) => {
 router.delete('/bookings/:id', auth, async (req, res) => {
   try {
     const bookingId = req.params.id;
-    const userId = req.user.id; // Set by your auth middleware from x-user-id
+    const userId = req.user.userId; // Set by your auth middleware from x-user-id
 
     // Check if booking exists and belongs to the user
     const booking = await Booking.findOne({

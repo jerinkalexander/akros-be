@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../../config/db');
-const PhoneNumber = require('./PhoneNumber');
+const User = require('../User');
 
 const OTP = sequelize.define('OTP', {
   otp: {
@@ -11,11 +11,11 @@ const OTP = sequelize.define('OTP', {
     type: DataTypes.DATE,
     allowNull: false,
   },
-  phoneNumberId: {
+  userId: {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: PhoneNumber,
+      model: User,
       key: 'id'
     },
     onDelete: 'CASCADE'
@@ -26,7 +26,7 @@ const OTP = sequelize.define('OTP', {
 });
 
 // Define associations
-PhoneNumber.hasMany(OTP, { foreignKey: 'phoneNumberId' });
-OTP.belongsTo(PhoneNumber, { foreignKey: 'phoneNumberId' });
+User.hasMany(OTP, { foreignKey: 'userId' });
+OTP.belongsTo(User, { foreignKey: 'userId' });
 
 module.exports = OTP;

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const UserProfile = require('../../models/app/UserProfile');
-const PhoneNumber = require('../../models/app/PhoneNumber');
+const UserProfile = require('../models/app/Profile');
+const PhoneNumber = require('../models/User');
 
 router.post('/user-profile', async (req, res) => {
   try {

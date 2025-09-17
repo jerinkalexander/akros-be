@@ -2,26 +2,34 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('otps', {
+    await queryInterface.createTable('profiles', {
       id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false
       },
-      otp: {
+      name: {
         type: Sequelize.STRING,
         allowNull: false
       },
-      expiresAt: {
-        type: Sequelize.DATE,
+      carNumber: {
+        type: Sequelize.STRING,
         allowNull: false
       },
-      phoneNumberId: {
+      email: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      place: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      userId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'phone_numbers',
+          model: 'users',
           key: 'id'
         },
         onDelete: 'CASCADE'
@@ -38,6 +46,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('otps');
+    await queryInterface.dropTable('profiles');
   }
 };
