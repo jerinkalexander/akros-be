@@ -52,7 +52,6 @@ app.use('/api', entityAppRoutes);
 app.use('/api', bookingAppRoute);
 
 // Protected admin routes
-app.use('/admin', authenticateToken);
 app.use('/admin/category-types', categoryTypeRoutes);
 app.use('/admin/shops', entityRoutes);
 app.use('/admin/bookings', bookingRoute);
