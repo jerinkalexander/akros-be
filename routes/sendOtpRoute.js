@@ -10,10 +10,12 @@ const OTP = require('../models/app/Otp');
 const generateOTP = '123456'; // For testing purposes, fixed OTP
 
 router.post('/send-otp', async (req, res) => {
-  const { phoneNumber, role } = req.body;
+  const { phoneNumber } = req.body;
+  const role = req.baseUrl.includes('/user') ? 'user' : 'shop';
 
-   if (!phoneNumber || !role)  {
-    return res.status(400).json({ message: 'Phone number and role are required' });
+
+   if (!phoneNumber )  {
+    return res.status(400).json({ message: 'Phone number is required' });
   }
 
   const otp = generateOTP;
