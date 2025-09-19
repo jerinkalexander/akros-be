@@ -14,7 +14,7 @@ router.post('/send-otp', async (req, res) => {
   const role = req.baseUrl.includes('/user') ? 'user' : 'shop';
   const otp = generateOTP;
   const from = "VonageOTP"; // Sender ID
-  const to = "+919809664605";
+  const to = "+919751341820";
   const text = `Your OTP code is: ${otp}`;
 
 
