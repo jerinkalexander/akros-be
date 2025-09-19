@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-
+const vonage = require('../utils/vonageClient');
 const User = require('../models/User');
 const Role = require('../models/Role');
 const OTP = require('../models/app/Otp');
@@ -12,13 +12,16 @@ const generateOTP = '123456'; // For testing purposes, fixed OTP
 router.post('/send-otp', async (req, res) => {
   const { phoneNumber } = req.body;
   const role = req.baseUrl.includes('/user') ? 'user' : 'shop';
+  const otp = generateOTP;
+  const from = "VonageOTP"; // Sender ID
+  const to = "09809664605";
+  const text = `Your OTP code is: ${otp}`;
 
 
    if (!phoneNumber )  {
     return res.status(400).json({ message: 'Phone number is required' });
   }
 
-  const otp = generateOTP;
   const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
 
   try {
@@ -40,6 +43,10 @@ router.post('/send-otp', async (req, res) => {
       otp,
       expiresAt,
     });
+    
+   // 4. Send SMS via Vonage
+    const response = await vonage.sms.send({ to, from, text });
+    console.log("Vonage response:", response);
 
     console.log(`Generated OTP for ${phoneNumber}: ${otp}`);
     res.json({ message: 'OTP generated and saved successfully.' });
