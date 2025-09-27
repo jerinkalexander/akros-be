@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const Booking = require('../../models/app/Booking');
-const Entity = require('../../models/admin/Shop');
+const Shop = require('../../models/admin/Shop');
 
 // ✅ Admin: Get all bookings //
 router.get('/', async (req, res) => {
   try {
     const bookings = await Booking.findAll({
-      include: [{ model: Entity }],
+      include: [{ model: Shop }],
       order: [['createdAt', 'DESC']]
     });
 
@@ -22,7 +22,7 @@ router.get('/:id', async (req, res) => {
   try {
     const booking = await Booking.findOne({
       where: { id: req.params.id },
-      include: [{ model: Entity }]
+      include: [{ model: Shop }]
     });
 
     if (!booking) {

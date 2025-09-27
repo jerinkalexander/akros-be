@@ -1,27 +1,26 @@
 const express = require('express');
 const router = express.Router();
 const Booking = require('../../models/app/Booking');
-const Entity = require('../../models/admin/Shop');
+const Shop = require('../../models/admin/Shop');
 const auth = require('../../middleware/auth'); // Sets req.user (e.g., phone_numbers.id)
 
 
 // ✅ Create a booking (for logged-in phone number)
 router.post('/bookings', auth, async (req, res) => {
   try {
-    const { entityId, userName, userContact, bookingDate, bookingTime, note } = req.body;
+    const { shopId, userName, userContact, bookingDate, bookingTime, note } = req.body;
 
-    // Check if Entity exists
-    const entity = await Entity.findByPk(entityId);
-    if (!entity) {
-      return res.status(404).json({ error: 'Entity not found' });
+    // Check if Shop exists
+    const shop = await Shop.findByPk(shopId);
+    if (!shop) {
+      return res.status(404).json({ error: 'Shop not found' });
     }
 
     // Create booking with logged-in user's phone_number ID
     const booking = await Booking.create({
-      entityId,
-      userId: req.user.phoneId, // userId is phone_numbers.id
+      shopId,
+      userId: req.user.userId, 
       userName,
-      userContact,
       bookingDate,
       bookingTime,
       note
@@ -39,7 +38,7 @@ router.get('/bookings', auth, async (req, res) => {
   try {
     const bookings = await Booking.findAll({
       where: { userId: req.user.userId },
-      include: [{ model: Entity }],
+      include: [{ model:Shop }],
       order: [['createdAt', 'DESC']]
     });
 
@@ -58,7 +57,7 @@ router.get('/bookings/:id', auth, async (req, res) => {
         id: req.params.id,
         userId: req.user.userId   // Ensures booking belongs to this phone_number
       },
-      include: [{ model: Entity }]
+      include: [{ model: Shop }]
     });
 
     if (!booking) {
@@ -75,7 +74,7 @@ router.get('/bookings/:id', auth, async (req, res) => {
 router.delete('/bookings/:id', auth, async (req, res) => {
   try {
     const bookingId = req.params.id;
-    const userId = req.user.userId; // Set by your auth middleware from x-user-id
+    const userId = req.user.id; // Set by your auth middleware from x-user-id
 
     // Check if booking exists and belongs to the user
     const booking = await Booking.findOne({
