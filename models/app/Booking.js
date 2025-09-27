@@ -1,14 +1,14 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../../config/db');
-const Entity = require('../admin/Shop');
+const Shop = require('../admin/Shop');
 const PhoneNumber = require('../User');
 
 const Booking = sequelize.define('Booking', {
-  entityId: {
+  shopId: {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: Entity,
+      model: Shop,
       key: 'id',
     },
   },
@@ -41,8 +41,8 @@ const Booking = sequelize.define('Booking', {
   timestamps: true,
 });
 
-Booking.belongsTo(Entity, { foreignKey: 'entityId' });
-Entity.hasMany(Booking, { foreignKey: 'entityId' });
+Booking.belongsTo(Shop, { foreignKey: 'shopId' });
+Shop.hasMany(Booking, { foreignKey: 'shopId' });
 
 Booking.belongsTo(PhoneNumber, { foreignKey: 'userId' });
 PhoneNumber.hasMany(Booking, { foreignKey: 'userId' });
