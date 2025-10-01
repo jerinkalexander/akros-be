@@ -45,8 +45,8 @@ router.post('/send-otp', async (req, res) => {
     });
     
    // 4. Send SMS via Vonage
-    const response = await vonage.sms.send({ to, from, text });
-    console.log("Vonage response:", response);
+   // const response = await vonage.sms.send({ to, from, text });
+    //console.log("Vonage response:", response);
 
     console.log(`Generated OTP for ${phoneNumber}: ${otp}`);
     res.json({ message: 'OTP generated and saved successfully.' });

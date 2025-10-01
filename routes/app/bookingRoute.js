@@ -8,7 +8,7 @@ const auth = require('../../middleware/auth'); // Sets req.user (e.g., phone_num
 // ✅ Create a booking (for logged-in phone number)
 router.post('/bookings', auth, async (req, res) => {
   try {
-    const { shopId, userName, userContact, bookingDate, bookingTime, note } = req.body;
+    const { shopId, bookingDate, bookingTime, note } = req.body;
 
     // Check if Shop exists
     const shop = await Shop.findByPk(shopId);
@@ -20,7 +20,6 @@ router.post('/bookings', auth, async (req, res) => {
     const booking = await Booking.create({
       shopId,
       userId: req.user.userId, 
-      userName,
       bookingDate,
       bookingTime,
       note

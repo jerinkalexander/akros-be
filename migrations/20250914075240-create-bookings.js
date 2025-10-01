@@ -25,10 +25,6 @@ module.exports = {
           key: 'id'
         }
       },
-      userName: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
       bookingDate: {
         type: Sequelize.DATEONLY,
         allowNull: false

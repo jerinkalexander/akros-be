@@ -20,10 +20,6 @@ const Booking = sequelize.define('Booking', {
       key: 'id',
     },
   },
-  userName: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
   bookingDate: {
     type: DataTypes.DATEONLY,
     allowNull: false,
