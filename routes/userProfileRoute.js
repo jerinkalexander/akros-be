@@ -35,9 +35,9 @@ router.post('/user-profile', async (req, res) => {
 
 router.post('/user-device-token', async (req, res) => {
   try {
-    const { id, userId, deviceType, pushToken } = req.body;
+    const { userId, deviceType, pushToken } = req.body;
 
-    if (!id || !userId || !deviceType || !pushToken) {
+    if (!userId || !deviceType || !pushToken) {
       return res.status(400).json({ message: 'Required fields missing' });
     }
 
@@ -46,7 +46,6 @@ router.post('/user-device-token', async (req, res) => {
     }
 
     const newDevice = await UserDevice.create({
-      id,
       userId,
       deviceType,
       pushToken,

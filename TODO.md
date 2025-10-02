@@ -1,0 +1,5 @@
+- [x] Create a new migration to alter the user_devices table: change id column to INTEGER with autoIncrement: true
+- [x] Update models/UserDevice.js: change id type to DataTypes.INTEGER and add autoIncrement: true
+- [x] Update routes/userProfileRoute.js: remove id from request body destructuring, validation, and UserDevice.create call in /user-device-token endpoint
+- [ ] Run the new migration to apply the database changes
+- [ ] Test the API to ensure id is auto-generated and not required in requests
