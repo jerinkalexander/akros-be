@@ -10,19 +10,23 @@ const UserDevice = sequelize.define('UserDevice', {
   },
   userId: {
     type: DataTypes.STRING(255),
-    allowNull: false
+    allowNull: false,
+    field: 'user_id'
   },
   deviceType: {
     type: DataTypes.ENUM('ios', 'android'),
-    allowNull: false
+    allowNull: false,
+    field: 'device_type'
   },
   pushToken: {
     type: DataTypes.TEXT,
-    allowNull: false
+    allowNull: false,
+    field: 'push_token'
   },
   isActive: {
     type: DataTypes.BOOLEAN,
-    defaultValue: true
+    defaultValue: true,
+    field: 'is_active'
   },
   createdAt: {
     type: DataTypes.DATE,
