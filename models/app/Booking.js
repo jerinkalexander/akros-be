@@ -1,7 +1,8 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../../config/db');
 const Shop = require('../admin/Shop');
-const PhoneNumber = require('../User');
+const User = require('../User');
+const BookingStatus = require('../bookingstatus');
 
 const Booking = sequelize.define('Booking', {
   shopId: {
@@ -16,7 +17,15 @@ const Booking = sequelize.define('Booking', {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: PhoneNumber,
+      model: User,
+      key: 'id',
+    },
+  },
+  statusId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: {
+      model: BookingStatus,
       key: 'id',
     },
   },
@@ -25,8 +34,12 @@ const Booking = sequelize.define('Booking', {
     allowNull: false,
   },
   bookingTime: {
-    type: DataTypes.STRING,
+    type: DataTypes.TIME,
     allowNull: false,
+  },
+  duration: {
+    type: DataTypes.INTEGER, // e.g., hours or days
+    allowNull: true,
   },
   note: {
     type: DataTypes.TEXT,
@@ -37,10 +50,14 @@ const Booking = sequelize.define('Booking', {
   timestamps: true,
 });
 
+// Associations
 Booking.belongsTo(Shop, { foreignKey: 'shopId' });
 Shop.hasMany(Booking, { foreignKey: 'shopId' });
 
-Booking.belongsTo(PhoneNumber, { foreignKey: 'userId' });
-PhoneNumber.hasMany(Booking, { foreignKey: 'userId' });
+Booking.belongsTo(User, { foreignKey: 'userId' });
+User.hasMany(Booking, { foreignKey: 'userId' });
+
+Booking.belongsTo(BookingStatus, { foreignKey: 'statusId' });
+BookingStatus.hasMany(Booking, { foreignKey: 'statusId' });
 
 module.exports = Booking;

@@ -20,22 +20,24 @@ const UserProfile = sequelize.define('UserProfile', {
     type: DataTypes.STRING,
     allowNull: true
   },
-  phoneNumberId: {
+  userId: {
     type: DataTypes.INTEGER,
     allowNull: false
   }
 }, {
-  tableName: 'user_profiles',
+  tableName: 'profiles',
   timestamps: true
 });
 
-// Association
-PhoneNumber.hasMany(UserProfile, {
-  foreignKey: 'phoneNumberId',
+// Association (one-to-one: each user has one profile)
+PhoneNumber.hasOne(UserProfile, {
+  foreignKey: 'userId',
+  as: 'profile',
   onDelete: 'CASCADE'
 });
 UserProfile.belongsTo(PhoneNumber, {
-  foreignKey: 'phoneNumberId'
+  foreignKey: 'userId',
+  as: 'user'
 });
 
 module.exports = UserProfile;

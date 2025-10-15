@@ -3,6 +3,7 @@ const router = express.Router();
 const OTP = require('../models/app/Otp');
 const User = require('../models/User');
 const UserToken = require('../models/UserToken');
+const UserProfile = require('../models/app/Profile');
 const { generateToken } = require('../utils/jwt');
 
 router.post('/verify-otp', async (req, res) => {
@@ -37,6 +38,18 @@ router.post('/verify-otp', async (req, res) => {
 
     // Save token in user_tokens table
     await UserToken.create({ userId: user.id, token });
+
+    // Check if user profile exists, if not create a basic one
+    const existingProfile = await UserProfile.findOne({ where: { userId: user.id } });
+    if (!existingProfile) {
+      await UserProfile.create({
+        userId: user.id,
+        name: '', // Empty name, can be updated later
+        carNumber: '', // Empty car number, can be updated later
+        email: null,
+        place: null
+      });
+    }
 
     res.json({ message: 'OTP verified successfully', token });
   } catch (error) {

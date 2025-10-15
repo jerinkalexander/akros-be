@@ -2,13 +2,13 @@ const express = require('express');
 const router = express.Router();
 const Booking = require('../../models/app/Booking');
 const Shop = require('../../models/admin/Shop');
-const auth = require('../../middleware/auth'); // Sets req.user (e.g., phone_numbers.id)
+const BookingStatus = require('../../models/bookingstatus');
+const auth = require('../../middleware/auth'); // Sets req.user (e.g., users.id)
 
-
-// ✅ Create a booking (for logged-in phone number)
-router.post('/bookings', auth, async (req, res) => {
+// ✅ Create a booking (for logged-in user)
+router.post('/', auth, async (req, res) => {
   try {
-    const { shopId, bookingDate, bookingTime, note } = req.body;
+    const { shopId, bookingDate, bookingTime, duration, note } = req.body;
 
     // Check if Shop exists
     const shop = await Shop.findByPk(shopId);
@@ -16,12 +16,20 @@ router.post('/bookings', auth, async (req, res) => {
       return res.status(404).json({ error: 'Shop not found' });
     }
 
-    // Create booking with logged-in user's phone_number ID
+    // Get the default status (pending)
+    const defaultStatus = await BookingStatus.findOne({ where: { name: 'pending' } });
+    if (!defaultStatus) {
+      return res.status(500).json({ error: 'Default booking status not found' });
+    }
+
+    // Create booking with logged-in user's ID and default status
     const booking = await Booking.create({
       shopId,
-      userId: req.user.userId, 
+      userId: req.user.userId,
       bookingDate,
       bookingTime,
+      duration,
+      statusId: defaultStatus.id,
       note
     });
 
@@ -32,12 +40,12 @@ router.post('/bookings', auth, async (req, res) => {
 });
 
 
-// ✅ Get all bookings of logged-in phone number
-router.get('/bookings', auth, async (req, res) => {
+// ✅ Get all bookings of logged-in user
+router.get('/', auth, async (req, res) => {
   try {
     const bookings = await Booking.findAll({
       where: { userId: req.user.userId },
-      include: [{ model:Shop }],
+      include: [{ model: Shop }],
       order: [['createdAt', 'DESC']]
     });
 
@@ -48,13 +56,13 @@ router.get('/bookings', auth, async (req, res) => {
 });
 
 
-// ✅ Get a single booking (by ID) of logged-in phone number
-router.get('/bookings/:id', auth, async (req, res) => {
+// ✅ Get a single booking (by ID) of logged-in user
+router.get('/:id', auth, async (req, res) => {
   try {
     const booking = await Booking.findOne({
       where: {
         id: req.params.id,
-        userId: req.user.userId   // Ensures booking belongs to this phone_number
+        userId: req.user.userId   // Ensures booking belongs to this user
       },
       include: [{ model: Shop }]
     });
@@ -70,10 +78,10 @@ router.get('/bookings/:id', auth, async (req, res) => {
 });
 
 // ✅ Delete a booking (only if it belongs to logged-in user)
-router.delete('/bookings/:id', auth, async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
   try {
     const bookingId = req.params.id;
-    const userId = req.user.id; // Set by your auth middleware from x-user-id
+    const userId = req.user.userId; // Set by your auth middleware
 
     // Check if booking exists and belongs to the user
     const booking = await Booking.findOne({

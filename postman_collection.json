@@ -1,0 +1,728 @@
+{
+  "info": {
+    "name": "ParkMate API",
+    "description": "API documentation for ParkMate backend with Parking and Shop features",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3001",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Send OTP",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phoneNumber\": \"9809664605\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/user/send-otp",
+              "host": ["{{baseUrl}}"],
+              "path": ["user", "send-otp"]
+            }
+          }
+        },
+        {
+          "name": "Verify OTP",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phoneNumber\": \"9809664605\",\n  \"otp\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/user/verify-otp",
+              "host": ["{{baseUrl}}"],
+              "path": ["user", "verify-otp"]
+            }
+          }
+        },
+        {
+          "name": "Create User Profile",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"carNumber\": \"ABC123\",\n  \"email\": \"john@example.com\",\n  \"place\": \"New York\",\n  \"phoneNumberId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/user-profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "user-profile"]
+            }
+          }
+        },
+        {
+          "name": "Get User Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/user-profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "user-profile"]
+            }
+          }
+        },
+        {
+          "name": "Save User Device Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": 1,\n  \"deviceType\": \"ios\",\n  \"pushToken\": \"sample_push_token_here\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/user-device-token",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "user-device-token"]
+            }
+          }
+        },
+        {
+          "name": "Send Push Notification",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": 1,\n  \"title\": \"Test Notification\",\n  \"body\": \"This is a test push notification\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/send-push-notification",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "send-push-notification"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "Category Types",
+          "item": [
+            {
+              "name": "Create Category Type",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Parking\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/category-types",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "category-types"]
+                }
+              }
+            },
+            {
+              "name": "Get All Category Types",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/category-types",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "category-types"]
+                }
+              }
+            },
+            {
+              "name": "Get Category Type by ID",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/category-types/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "category-types", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Update Category Type",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Updated Parking\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/category-types/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "category-types", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Delete Category Type",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/category-types/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "category-types", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Shops",
+          "item": [
+            {
+              "name": "Create Shop",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Sample Shop\",\n  \"categoryTypeId\": 1,\n  \"ownerId\": 1,\n  \"address1\": \"123 Main St\",\n  \"location\": \"City\",\n  \"contactNumber\": \"1234567890\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/entity",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "entity"]
+                }
+              }
+            },
+            {
+              "name": "Get All Shops",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/entity",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "entity"]
+                }
+              }
+            },
+            {
+              "name": "Get Shop by ID",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/entity/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "entity", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Update Shop",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Updated Shop\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/entity/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "entity", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Delete Shop",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/entity/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "entity", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Parkings",
+          "item": [
+            {
+              "name": "Create Parking",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Sample Parking\",\n  \"categoryTypeId\": 2,\n  \"ownerId\": 1,\n  \"address1\": \"456 Park Ave\",\n  \"location\": \"City\",\n  \"contactNumber\": \"0987654321\",\n  \"isCovered\": true,\n  \"vehicleTypes\": \"car\",\n  \"hasEVCharging\": false,\n  \"hasSecurity\": true,\n  \"hasScanCode\": true,\n  \"capacity\": 50,\n  \"hourlyRate\": 5.00,\n  \"dailyRate\": 20.00\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/parking",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "parking"]
+                }
+              }
+            },
+            {
+              "name": "Get All Parkings",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/parking",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "parking"]
+                }
+              }
+            },
+            {
+              "name": "Get Parking by ID",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/parking/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "parking", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Update Parking",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Updated Parking\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/parking/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "parking", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Delete Parking",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/parking/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "parking", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "App",
+      "item": [
+        {
+          "name": "Shop Bookings",
+          "item": [
+            {
+              "name": "Create Shop Booking",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shopId\": 1,\n  \"bookingDate\": \"2023-10-01\",\n  \"bookingTime\": \"10:00\",\n  \"duration\": 2,\n  \"note\": \"Test booking\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/bookings",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "bookings"]
+                }
+              }
+            },
+            {
+              "name": "Get User Shop Bookings",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/bookings",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "bookings"]
+                }
+              }
+            },
+            {
+              "name": "Get Shop Booking by ID",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/bookings/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "bookings", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Delete Shop Booking",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/bookings/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "bookings", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Parking Bookings",
+          "item": [
+            {
+              "name": "Create Parking Booking",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"parkingId\": 1,\n  \"bookingDate\": \"2023-10-01\",\n  \"bookingTime\": \"10:00\",\n  \"duration\": 2,\n  \"note\": \"Parking booking\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/parking-bookings",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "parking-bookings"]
+                }
+              }
+            },
+            {
+              "name": "Get User Parking Bookings",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/parking-bookings",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "parking-bookings"]
+                }
+              }
+            },
+            {
+              "name": "Get Parking Booking by ID",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/parking-bookings/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "parking-bookings", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Delete Parking Booking",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/parking-bookings/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "parking-bookings", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
