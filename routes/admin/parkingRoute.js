@@ -119,7 +119,10 @@ router.get('/', async (req, res) => {
     // Build where clause for search
     const where = search
       ? {
-          name: { [require('sequelize').Op.like]: `%${search}%` }
+          [require('sequelize').Op.or]: [
+            { name: { [require('sequelize').Op.like]: `%${search}%` } },
+            { location: { [require('sequelize').Op.like]: `%${search}%` } }
+          ]
         }
       : {};
 

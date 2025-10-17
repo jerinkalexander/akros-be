@@ -283,130 +283,130 @@
             }
           ]
         },
-        {
-          "name": "Shops",
-          "item": [
             {
-              "name": "Create Shop",
-              "request": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "Content-Type",
-                    "value": "application/json"
-                  },
-                  {
-                    "key": "Authorization",
-                    "value": "Bearer {{token}}"
+              "name": "Shops",
+              "item": [
+                {
+                  "name": "Create Shop",
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Authorization",
+                        "value": "Bearer {{token}}"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"Sample Shop\",\n  \"categoryTypeId\": 1,\n  \"ownerId\": 1,\n  \"address1\": \"123 Main St\",\n  \"location\": \"City\",\n  \"contactNumber\": \"1234567890\"\n}"
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/admin/shops",
+                      "host": ["{{baseUrl}}"],
+                      "path": ["admin", "shops"]
+                    }
                   }
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"name\": \"Sample Shop\",\n  \"categoryTypeId\": 1,\n  \"ownerId\": 1,\n  \"address1\": \"123 Main St\",\n  \"location\": \"City\",\n  \"contactNumber\": \"1234567890\"\n}"
                 },
-                "url": {
-                  "raw": "{{baseUrl}}/admin/entity",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["admin", "entity"]
-                }
-              }
-            },
-            {
-              "name": "Get All Shops",
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "Authorization",
-                    "value": "Bearer {{token}}"
-                  }
-                ],
-                "url": {
-                  "raw": "{{baseUrl}}/admin/entity",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["admin", "entity"]
-                }
-              }
-            },
-            {
-              "name": "Get Shop by ID",
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "Authorization",
-                    "value": "Bearer {{token}}"
-                  }
-                ],
-                "url": {
-                  "raw": "{{baseUrl}}/admin/entity/:id",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["admin", "entity", ":id"],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "1"
+                {
+                  "name": "Get All Shops",
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Authorization",
+                        "value": "Bearer {{token}}"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/admin/shops",
+                      "host": ["{{baseUrl}}"],
+                      "path": ["admin", "shops"]
                     }
-                  ]
-                }
-              }
-            },
-            {
-              "name": "Update Shop",
-              "request": {
-                "method": "PUT",
-                "header": [
-                  {
-                    "key": "Content-Type",
-                    "value": "application/json"
-                  },
-                  {
-                    "key": "Authorization",
-                    "value": "Bearer {{token}}"
                   }
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"name\": \"Updated Shop\"\n}"
                 },
-                "url": {
-                  "raw": "{{baseUrl}}/admin/entity/:id",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["admin", "entity", ":id"],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "1"
+                {
+                  "name": "Get Shop by ID",
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Authorization",
+                        "value": "Bearer {{token}}"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/admin/shops/:id",
+                      "host": ["{{baseUrl}}"],
+                      "path": ["admin", "shops", ":id"],
+                      "variable": [
+                        {
+                          "key": "id",
+                          "value": "1"
+                        }
+                      ]
                     }
-                  ]
-                }
-              }
-            },
-            {
-              "name": "Delete Shop",
-              "request": {
-                "method": "DELETE",
-                "header": [
-                  {
-                    "key": "Authorization",
-                    "value": "Bearer {{token}}"
                   }
-                ],
-                "url": {
-                  "raw": "{{baseUrl}}/admin/entity/:id",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["admin", "entity", ":id"],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "1"
+                },
+                {
+                  "name": "Update Shop",
+                  "request": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Authorization",
+                        "value": "Bearer {{token}}"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"Updated Shop\"\n}"
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/admin/shops/:id",
+                      "host": ["{{baseUrl}}"],
+                      "path": ["admin", "shops", ":id"],
+                      "variable": [
+                        {
+                          "key": "id",
+                          "value": "1"
+                        }
+                      ]
                     }
-                  ]
+                  }
+                },
+                {
+                  "name": "Delete Shop",
+                  "request": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Authorization",
+                        "value": "Bearer {{token}}"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/admin/shops/:id",
+                      "host": ["{{baseUrl}}"],
+                      "path": ["admin", "shops", ":id"],
+                      "variable": [
+                        {
+                          "key": "id",
+                          "value": "1"
+                        }
+                      ]
+                    }
+                  }
                 }
-              }
-            }
-          ]
-        },
+              ]
+            },
         {
           "name": "Parkings",
           "item": [
