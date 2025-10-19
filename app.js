@@ -17,11 +17,13 @@ const verifyOtpRoute = require('./routes/verifyOtpRoute');
 const userProfileRoute = require('./routes/userProfileRoute');
 const entityAppRoutes = require('./routes/app/entityRoute');
 const bookingAppRoute = require('./routes/app/bookingRoute');
+const parkingBookingAppRoute = require('./routes/app/parkingBookingRoute');
 
 //Admin routes
 const categoryTypeRoutes = require('./routes/admin/categoryTypeRoute');
 const entityRoutes = require('./routes/admin/entityRoute');
 const bookingRoute = require('./routes/admin/bookingRoute');
+const parkingRoute = require('./routes/admin/parkingRoute');
 
 
 const sequelize = require('./config/db');
@@ -46,15 +48,17 @@ app.use('/shop', verifyOtpRoute);
 // Routes that REQUIRE authentication
 
 // Protected API routes
-app.use('/api', authenticateToken);     
+app.use('/api', authenticateToken);
 app.use('/api', userProfileRoute);
 app.use('/api', entityAppRoutes);
-app.use('/api', bookingAppRoute);
+app.use('/api/bookings', bookingAppRoute);
+app.use('/api/parking-bookings', parkingBookingAppRoute);
 
 // Protected admin routes
 app.use('/admin/category-types', categoryTypeRoutes);
 app.use('/admin/shops', entityRoutes);
 app.use('/admin/bookings', bookingRoute);
+app.use('/admin/parking', parkingRoute);
 
 // Protected shop routes
 app.use('/shop', authenticateToken);

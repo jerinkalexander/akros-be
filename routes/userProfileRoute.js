@@ -23,12 +23,36 @@ router.post('/user-profile', async (req, res) => {
       carNumber,
       email,
       place,
-      phoneNumberId
+      userId: phoneNumberId
     });
 
     res.status(201).json({ message: 'Data saved successfully', data: record });
   } catch (error) {
     console.error('Error saving data:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+router.get('/user-profile', async (req, res) => {
+  try {
+    // Assuming auth middleware sets req.user with userId
+    const userId = req.user ? req.user.userId : null;
+    if (!userId) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    const profile = await UserProfile.findOne({
+      where: { userId: userId },
+      include: [{ model: PhoneNumber, as: 'user' }]
+    });
+
+    if (!profile) {
+      return res.status(404).json({ message: 'User profile not found' });
+    }
+
+    res.status(200).json({ data: profile });
+  } catch (error) {
+    console.error('Error fetching user profile:', error);
     res.status(500).json({ message: 'Server error' });
   }
 });

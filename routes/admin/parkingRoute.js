@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const Shop = require('../../models/admin/Shop');
+const Parking = require('../../models/admin/Parking');
 const CategoryType = require('../../models/admin/CategoryType');
 
-// ✅ CREATE Shop
+// ✅ CREATE Parking
 router.post('/', async (req, res) => {
   try {
     const {
@@ -23,6 +23,14 @@ router.post('/', async (req, res) => {
       openingTime,
       closingTime,
       closedOn,
+      isCovered,
+      vehicleTypes,
+      hasEVCharging,
+      hasSecurity,
+      hasScanCode,
+      capacity,
+      hourlyRate,
+      dailyRate,
     } = req.body;
 
     const categoryType = await CategoryType.findByPk(categoryTypeId);
@@ -30,7 +38,7 @@ router.post('/', async (req, res) => {
       return res.status(404).json({ error: 'Category type not found' });
     }
 
-    const shop = await Shop.create({
+    const parking = await Parking.create({
       name,
       categoryTypeId,
       ownerId,
@@ -47,49 +55,57 @@ router.post('/', async (req, res) => {
       openingTime,
       closingTime,
       closedOn,
+      isCovered,
+      vehicleTypes,
+      hasEVCharging,
+      hasSecurity,
+      hasScanCode,
+      capacity,
+      hourlyRate,
+      dailyRate,
     });
 
-    res.status(201).json(shop);
+    res.status(201).json(parking);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 });
 
-// ✅ UPDATE Shop
+// ✅ UPDATE Parking
 router.put('/:id', async (req, res) => {
   try {
     const id = req.params.id;
-    const shop = await Shop.findByPk(id);
+    const parking = await Parking.findByPk(id);
 
-    if (!shop) {
-      return res.status(404).json({ error: 'Shop not found' });
+    if (!parking) {
+      return res.status(404).json({ error: 'Parking not found' });
     }
 
-    await shop.update(req.body);
-    res.json(shop);
+    await parking.update(req.body);
+    res.json(parking);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 });
 
-// ✅ GET Single Shop
+// ✅ GET Single Parking
 router.get('/:id', async (req, res) => {
   try {
-    const shop = await Shop.findByPk(req.params.id, {
+    const parking = await Parking.findByPk(req.params.id, {
       include: [{ model: CategoryType }]
     });
 
-    if (!shop) {
-      return res.status(404).json({ error: 'Shop not found' });
+    if (!parking) {
+      return res.status(404).json({ error: 'Parking not found' });
     }
 
-    res.json(shop);
+    res.json(parking);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// ✅ LIST All Shops with Pagination and Search
+// ✅ LIST All Parkings with Pagination and Search
 router.get('/', async (req, res) => {
   try {
     // Pagination params
@@ -103,11 +119,14 @@ router.get('/', async (req, res) => {
     // Build where clause for search
     const where = search
       ? {
-          name: { [require('sequelize').Op.like]: `%${search}%` }
+          [require('sequelize').Op.or]: [
+            { name: { [require('sequelize').Op.like]: `%${search}%` } },
+            { location: { [require('sequelize').Op.like]: `%${search}%` } }
+          ]
         }
       : {};
 
-    const { count, rows: shops } = await Shop.findAndCountAll({
+    const { count, rows: parkings } = await Parking.findAndCountAll({
       where,
       include: [{ model: CategoryType }],
       order: [['createdAt', 'DESC']],
@@ -119,39 +138,39 @@ router.get('/', async (req, res) => {
       total: count,
       page,
       pageSize: limit,
-      shops
+      parkings
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// ✅ LIST Shops by CategoryType
+// ✅ LIST Parkings by CategoryType
 router.get('/category/:categoryTypeId', async (req, res) => {
   try {
     const { categoryTypeId } = req.params;
-    const shops = await Shop.findAll({
+    const parkings = await Parking.findAll({
       where: { categoryTypeId },
       include: [{ model: CategoryType }]
     });
 
-    res.json(shops);
+    res.json(parkings);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// ✅ DELETE Shop
+// ✅ DELETE Parking
 router.delete('/:id', async (req, res) => {
   try {
-    const shop = await Shop.findByPk(req.params.id);
+    const parking = await Parking.findByPk(req.params.id);
 
-    if (!shop) {
-      return res.status(404).json({ error: 'Shop not found' });
+    if (!parking) {
+      return res.status(404).json({ error: 'Parking not found' });
     }
 
-    await shop.destroy();
-    res.json({ message: 'Shop deleted successfully' });
+    await parking.destroy();
+    res.json({ message: 'Parking deleted successfully' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

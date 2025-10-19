@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../../config/db');
 const CategoryType = require('./CategoryType');
 
-const Shop = sequelize.define('Shop', {
+const Parking = sequelize.define('Parking', {
   name: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -17,7 +17,7 @@ const Shop = sequelize.define('Shop', {
   },
   ownerId: {
     type: DataTypes.INTEGER,
-    allowNull: true, // Allow null for existing data, but require for new entries
+    allowNull: false,
     references: {
       model: 'users',
       key: 'id',
@@ -60,15 +60,47 @@ const Shop = sequelize.define('Shop', {
     type: DataTypes.STRING,
   },
   closedOn: {
-    type: DataTypes.TEXT, // Assuming multiple days as comma-separated string
+    type: DataTypes.TEXT,
+  },
+  isCovered: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
+  vehicleTypes: {
+    type: DataTypes.ENUM('bike', 'car', 'both'),
+    defaultValue: 'car',
+  },
+  hasEVCharging: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
+  hasSecurity: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
+  hasScanCode: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
+  capacity: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+  },
+  hourlyRate: {
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: true,
+  },
+  dailyRate: {
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: true,
   },
 }, {
-  tableName: 'shops',
+  tableName: 'parkings',
   timestamps: true,
 });
 
-// Association
-Shop.belongsTo(CategoryType, { foreignKey: 'categoryTypeId' });
-CategoryType.hasMany(Shop, { foreignKey: 'categoryTypeId' });
+// Associations
+Parking.belongsTo(CategoryType, { foreignKey: 'categoryTypeId' });
+CategoryType.hasMany(Parking, { foreignKey: 'categoryTypeId' });
 
-module.exports = Shop;
+module.exports = Parking;
