@@ -170,7 +170,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"latitude\": 40.7128,\n  \"longitude\": -74.0060,\n  \"locationName\": \"New York City\",\n  \"setAsDefault\": true\n}"
+              "raw": "{\n  \"latitude\": 40.7128,\n  \"longitude\": -74.0060,\n  \"locationName\": \"New York City\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/api/user-location",
@@ -197,7 +197,7 @@
           }
         },
         {
-          "name": "Get Default User Location",
+          "name": "Get User Location",
           "request": {
             "method": "GET",
             "header": [

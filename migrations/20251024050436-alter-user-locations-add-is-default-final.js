@@ -23,13 +23,13 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.removeColumn('user_locations', 'isDefault');
+    // Check if isDefault column exists before removing
+    const tableDescription = await queryInterface.describeTable('user_locations');
+    if (tableDescription.isDefault) {
+      await queryInterface.removeColumn('user_locations', 'isDefault');
+    }
 
-    // Add back unique constraint on userId
-    await queryInterface.addConstraint('user_locations', {
-      fields: ['userId'],
-      type: 'unique',
-      name: 'user_locations_userId_uk'
-    });
+    // Note: We don't add back the unique constraint on userId in down migration
+    // because the original create migration doesn't have it anymore
   }
 };
