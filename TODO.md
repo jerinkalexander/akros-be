@@ -1,22 +1,21 @@
-# TODO: Add Parking Category Feature
+# TODO List for User Location Feature
 
-## Overview
-Add a new "Parking" category with a dedicated Parking model for better maintenance and UI separation. Parking will have basic details (name, address, etc.) and options like covered parking, bike/car support, EV charging, security, scan code, plus capacity, rates, etc.
+## Completed Tasks
+- [x] Create UserLocation model with latitude, longitude, locationName, and userId fields
+- [x] Generate migration for user_locations table
+- [x] Update associations.js to include UserLocation model and define relationships
+- [x] Add POST /user-location endpoint to save/update user location
+- [x] Add GET /user-locations endpoint to retrieve all user locations
+- [x] Add GET /user-location endpoint to retrieve default location
+- [x] Add isDefault flag to support multiple locations per user
+- [x] Update migration to add isDefault column and remove unique constraint on userId
+- [x] Run database migration to create the table and alter it
+- [x] Integrate UserLocation into userProfileRoute.js
 
-## Steps
-- [x] Create new Parking model (models/admin/Parking.js) with fields similar to Shop plus parking-specific options.
-- [x] Create migration for Parking table (migrations/202509XX-create-parkings.js).
-- [x] Update Booking model to support parking bookings (add parkingId, update associations).
-- [x] Create routes for Parking CRUD (routes/admin/parkingRoute.js).
-- [x] Update associations (models/associations.js) to include Parking.
-- [x] Update seeder to add "Parking" category (seeders/20251001000000-seed-roles.js).
-- [x] Run migrations and seeders.
-- [x] Add ownerId to Shop and Parking models for ownership mapping.
-- [x] Update routes to include ownerId in create/update operations.
-- [x] Test: Create parking via API, book it.
-- [x] Update any dependent routes if needed (e.g., app/bookingRoute.js for parking bookings).
-
-## Notes
-- Parking fields: name, addresses, location, contacts, geo, timings, plus isCovered (boolean), vehicleTypes (enum: bike/car/both), hasEVCharging (boolean), hasSecurity (boolean), hasScanCode (boolean), capacity (integer), hourlyRate (decimal), dailyRate (decimal).
-- Booking: Add optional parkingId; update to handle both shop and parking bookings.
-- Ensure no breaking changes to existing Shop/Booking functionality.
+## Next Steps
+- [ ] Test the API endpoints using Postman or similar tool
+- [ ] Update Postman collection with new endpoints
+- [ ] Ensure authentication middleware is properly applied
+- [ ] Handle edge cases (e.g., invalid coordinates, database errors)
+- [ ] Add validation for latitude/longitude ranges if needed
+- [ ] Consider adding location history if multiple locations per user are required in the future

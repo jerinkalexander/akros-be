@@ -6,6 +6,7 @@ const Booking = require('./app/Booking');
 const ParkingBooking = require('./app/ParkingBooking');
 const CategoryType = require('./admin/CategoryType');
 const BookingStatus = require('./bookingstatus');
+const UserLocation = require('./app/UserLocation');
 
 // Define associations
 User.belongsTo(Role, { foreignKey: 'roleId' });
@@ -43,6 +44,10 @@ User.hasMany(ParkingBooking, { foreignKey: 'userId' });
 ParkingBooking.belongsTo(BookingStatus, { foreignKey: 'statusId' });
 BookingStatus.hasMany(ParkingBooking, { foreignKey: 'statusId' });
 
+// User Location associations
+User.hasMany(UserLocation, { foreignKey: 'userId', as: 'locations' });
+UserLocation.belongsTo(User, { foreignKey: 'userId', as: 'user' });
+
 module.exports = {
   User,
   Role,
@@ -51,5 +56,6 @@ module.exports = {
   Booking,
   ParkingBooking,
   CategoryType,
-  BookingStatus
+  BookingStatus,
+  UserLocation
 };
