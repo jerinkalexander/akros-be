@@ -17,11 +17,6 @@ const UserLocation = sequelize.define('UserLocation', {
   userId: {
     type: DataTypes.INTEGER,
     allowNull: false
-  },
-  isDefault: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
-    defaultValue: false
   }
 }, {
   tableName: 'user_locations',

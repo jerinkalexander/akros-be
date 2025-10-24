@@ -103,7 +103,7 @@ router.post('/send-push-notification', async (req, res) => {
 
 router.post('/user-location', async (req, res) => {
   try {
-    const { latitude, longitude, locationName, setAsDefault = false } = req.body;
+    const { latitude, longitude, locationName } = req.body;
     const userId = req.user ? req.user.userId : null;
 
     if (!userId) {
@@ -124,28 +124,11 @@ router.post('/user-location', async (req, res) => {
     });
 
     if (existingLocation) {
-      // If location exists and setAsDefault is true, set it as default
-      if (setAsDefault && !existingLocation.isDefault) {
-        // First, unset all other default locations for this user
-        await UserLocation.update(
-          { isDefault: false },
-          { where: { userId, isDefault: true } }
-        );
-        // Set this location as default
-        await existingLocation.update({ isDefault: true, locationName });
-      } else if (locationName && locationName !== existingLocation.locationName) {
-        // Update location name if different
+      // Update location name if different
+      if (locationName && locationName !== existingLocation.locationName) {
         await existingLocation.update({ locationName });
       }
       return res.status(200).json({ message: 'Location already exists', data: existingLocation });
-    }
-
-    // If setAsDefault is true, unset all other default locations for this user
-    if (setAsDefault) {
-      await UserLocation.update(
-        { isDefault: false },
-        { where: { userId, isDefault: true } }
-      );
     }
 
     // Create new location
@@ -153,8 +136,7 @@ router.post('/user-location', async (req, res) => {
       latitude,
       longitude,
       locationName,
-      userId,
-      isDefault: setAsDefault
+      userId
     });
 
     res.status(201).json({ message: 'Location saved successfully', data: location });
@@ -174,7 +156,7 @@ router.get('/user-locations', async (req, res) => {
     const locations = await UserLocation.findAll({
       where: { userId },
       include: [{ model: PhoneNumber, as: 'user' }],
-      order: [['isDefault', 'DESC'], ['createdAt', 'DESC']] // Default locations first, then by creation date
+      order: [['createdAt', 'DESC']] // Order by creation date
     });
 
     res.status(200).json({ data: locations });
@@ -192,12 +174,13 @@ router.get('/user-location', async (req, res) => {
     }
 
     const location = await UserLocation.findOne({
-      where: { userId, isDefault: true },
-      include: [{ model: PhoneNumber, as: 'user' }]
+      where: { userId },
+      include: [{ model: PhoneNumber, as: 'user' }],
+      order: [['createdAt', 'DESC']]
     });
 
     if (!location) {
-      return res.status(404).json({ message: 'Default user location not found' });
+      return res.status(404).json({ message: 'User location not found' });
     }
 
     res.status(200).json({ data: location });
