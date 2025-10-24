@@ -3,6 +3,7 @@ const router = express.Router();
 const UserProfile = require('../models/app/Profile');
 const PhoneNumber = require('../models/User');
 const UserDevice = require('../models/UserDevice');
+const UserLocation = require('../models/app/UserLocation');
 const { sendPushNotification } = require('../utils/pushNotification');
 
 router.post('/user-profile', async (req, res) => {
@@ -97,6 +98,112 @@ router.post('/send-push-notification', async (req, res) => {
   } catch (error) {
     console.error('Error in send-push-notification endpoint:', error);
     res.status(500).json({ message: 'Failed to send push notification', error: error.message });
+  }
+});
+
+router.post('/user-location', async (req, res) => {
+  try {
+    const { latitude, longitude, locationName, setAsDefault = false } = req.body;
+    const userId = req.user ? req.user.userId : null;
+
+    if (!userId) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    if (!latitude || !longitude) {
+      return res.status(400).json({ message: 'Latitude and longitude are required' });
+    }
+
+    // Check if this exact location already exists for the user
+    const existingLocation = await UserLocation.findOne({
+      where: {
+        userId,
+        latitude,
+        longitude
+      }
+    });
+
+    if (existingLocation) {
+      // If location exists and setAsDefault is true, set it as default
+      if (setAsDefault && !existingLocation.isDefault) {
+        // First, unset all other default locations for this user
+        await UserLocation.update(
+          { isDefault: false },
+          { where: { userId, isDefault: true } }
+        );
+        // Set this location as default
+        await existingLocation.update({ isDefault: true, locationName });
+      } else if (locationName && locationName !== existingLocation.locationName) {
+        // Update location name if different
+        await existingLocation.update({ locationName });
+      }
+      return res.status(200).json({ message: 'Location already exists', data: existingLocation });
+    }
+
+    // If setAsDefault is true, unset all other default locations for this user
+    if (setAsDefault) {
+      await UserLocation.update(
+        { isDefault: false },
+        { where: { userId, isDefault: true } }
+      );
+    }
+
+    // Create new location
+    const location = await UserLocation.create({
+      latitude,
+      longitude,
+      locationName,
+      userId,
+      isDefault: setAsDefault
+    });
+
+    res.status(201).json({ message: 'Location saved successfully', data: location });
+  } catch (error) {
+    console.error('Error saving user location:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+router.get('/user-locations', async (req, res) => {
+  try {
+    const userId = req.user ? req.user.userId : null;
+    if (!userId) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    const locations = await UserLocation.findAll({
+      where: { userId },
+      include: [{ model: PhoneNumber, as: 'user' }],
+      order: [['isDefault', 'DESC'], ['createdAt', 'DESC']] // Default locations first, then by creation date
+    });
+
+    res.status(200).json({ data: locations });
+  } catch (error) {
+    console.error('Error fetching user locations:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+router.get('/user-location', async (req, res) => {
+  try {
+    const userId = req.user ? req.user.userId : null;
+    if (!userId) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    const location = await UserLocation.findOne({
+      where: { userId, isDefault: true },
+      include: [{ model: PhoneNumber, as: 'user' }]
+    });
+
+    if (!location) {
+      return res.status(404).json({ message: 'Default user location not found' });
+    }
+
+    res.status(200).json({ data: location });
+  } catch (error) {
+    console.error('Error fetching user location:', error);
+    res.status(500).json({ message: 'Server error' });
   }
 });
 

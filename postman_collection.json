@@ -153,6 +153,65 @@
               "path": ["api", "send-push-notification"]
             }
           }
+        },
+        {
+          "name": "Save User Location",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"latitude\": 40.7128,\n  \"longitude\": -74.0060,\n  \"locationName\": \"New York City\",\n  \"setAsDefault\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/user-location",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "user-location"]
+            }
+          }
+        },
+        {
+          "name": "Get User Locations",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/user-locations",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "user-locations"]
+            }
+          }
+        },
+        {
+          "name": "Get Default User Location",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/user-location",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "user-location"]
+            }
+          }
         }
       ]
     },
