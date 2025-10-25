@@ -1,10 +1,29 @@
 const express = require('express');
+const multer = require('multer');
 const router = express.Router();
 const Shop = require('../../models/admin/Shop');
 const CategoryType = require('../../models/admin/CategoryType');
+const ShopImage = require('../../models/admin/ShopImage');
+const doSpacesService = require('../../utils/doSpaces');
+
+// Configure multer for memory storage
+const storage = multer.memoryStorage();
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 5MB limit
+  },
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype.startsWith('image/')) {
+      cb(null, true);
+    } else {
+      cb(new Error('Only image files are allowed!'), false);
+    }
+  },
+});
 
 // ✅ CREATE Shop
-router.post('/', async (req, res) => {
+router.post('/', upload.array('images', 10), async (req, res) => {
   try {
     const {
       name,
@@ -49,14 +68,36 @@ router.post('/', async (req, res) => {
       closedOn,
     });
 
-    res.status(201).json(shop);
+    // Handle image uploads if provided
+    const uploadedImages = [];
+    if (req.files && req.files.length > 0) {
+      for (const file of req.files) {
+        try {
+          const uploadResult = await doSpacesService.uploadImage(file, `shop-${shop.id}`);
+          const shopImage = await ShopImage.create({
+            shopId: shop.id,
+            imageUrl: uploadResult.imageUrl,
+            imageKey: uploadResult.imageKey,
+          });
+          uploadedImages.push(shopImage);
+        } catch (imageError) {
+          console.error('Error uploading image:', imageError);
+          // Continue with other images even if one fails
+        }
+      }
+    }
+
+    res.status(201).json({
+      shop,
+      images: uploadedImages
+    });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 });
 
 // ✅ UPDATE Shop
-router.put('/:id', async (req, res) => {
+router.put('/:id', upload.array('images', 10), async (req, res) => {
   try {
     const id = req.params.id;
     const shop = await Shop.findByPk(id);
@@ -66,7 +107,30 @@ router.put('/:id', async (req, res) => {
     }
 
     await shop.update(req.body);
-    res.json(shop);
+
+    // Handle image uploads if provided
+    const uploadedImages = [];
+    if (req.files && req.files.length > 0) {
+      for (const file of req.files) {
+        try {
+          const uploadResult = await doSpacesService.uploadImage(file, `shop-${shop.id}`);
+          const shopImage = await ShopImage.create({
+            shopId: shop.id,
+            imageUrl: uploadResult.imageUrl,
+            imageKey: uploadResult.imageKey,
+          });
+          uploadedImages.push(shopImage);
+        } catch (imageError) {
+          console.error('Error uploading image:', imageError);
+          // Continue with other images even if one fails
+        }
+      }
+    }
+
+    res.json({
+      shop,
+      newImages: uploadedImages
+    });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
