@@ -4,6 +4,7 @@ const UserProfile = require('../models/app/Profile');
 const PhoneNumber = require('../models/User');
 const UserDevice = require('../models/UserDevice');
 const UserLocation = require('../models/app/UserLocation');
+const UserToken = require('../models/UserToken');
 const { sendPushNotification } = require('../utils/pushNotification');
 
 router.post('/user-profile', async (req, res) => {
@@ -186,6 +187,31 @@ router.get('/user-location', async (req, res) => {
     res.status(200).json({ data: location });
   } catch (error) {
     console.error('Error fetching user location:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+router.post('/logout', async (req, res) => {
+  try {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (!token) {
+      return res.status(400).json({ message: 'Token required' });
+    }
+
+    // Delete the token from the database
+    const deletedRows = await UserToken.destroy({
+      where: { token: token }
+    });
+
+    if (deletedRows === 0) {
+      return res.status(404).json({ message: 'Token not found' });
+    }
+
+    res.status(200).json({ message: 'Logged out successfully' });
+  } catch (error) {
+    console.error('Error during logout:', error);
     res.status(500).json({ message: 'Server error' });
   }
 });
