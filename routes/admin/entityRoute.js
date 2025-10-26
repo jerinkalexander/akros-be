@@ -173,7 +173,10 @@ router.get('/', async (req, res) => {
 
     const { count, rows: shops } = await Shop.findAndCountAll({
       where,
-      include: [{ model: CategoryType }],
+      include: [
+        { model: CategoryType },
+        { model: ShopImage, as: 'ShopImages' }
+      ],
       order: [['createdAt', 'DESC']],
       limit,
       offset

@@ -22,7 +22,7 @@ const upload = multer({
 });
 
 // ✅ UPLOAD Shop Image
-router.post('/upload/:shopId', upload.single('image'), async (req, res) => {
+router.post('/upload/:shopId', upload.array('images', 1), async (req, res) => {
   try {
     const { shopId } = req.params;
 
@@ -32,12 +32,15 @@ router.post('/upload/:shopId', upload.single('image'), async (req, res) => {
       return res.status(404).json({ error: 'Shop not found' });
     }
 
-    if (!req.file) {
+    if (!req.files || req.files.length === 0) {
       return res.status(400).json({ error: 'No image file provided' });
     }
 
+
+    const file = req.files[0]; 
+ 
     // Upload to Digital Ocean Spaces
-    const uploadResult = await doSpacesService.uploadImage(req.file, `shop-${shopId}`);
+    const uploadResult = await doSpacesService.uploadImage(file, `shop-${shopId}`);
 
     // Save to database
     const shopImage = await ShopImage.create({

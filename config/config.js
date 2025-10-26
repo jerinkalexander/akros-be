@@ -15,8 +15,8 @@ module.exports = {
   doSpaces: {
     accessKeyId: process.env.DO_SPACES_ACCESS_KEY,
     secretAccessKey: process.env.DO_SPACES_SECRET_KEY,
-    region: process.env.DO_SPACES_REGION || 'blr1',
-    endpoint: process.env.DO_SPACES_ENDPOINT || 'https://shop-images.blr1.digitaloceanspaces.com',
-    bucket: process.env.DO_SPACES_BUCKET || 'shop-images'
+    region: process.env.DO_SPACES_REGION,
+    endpoint: process.env.DO_SPACES_ENDPOINT,
+    bucket: process.env.DO_SPACES_BUCKET
   }
 };
