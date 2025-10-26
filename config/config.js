@@ -10,4 +10,13 @@ module.exports = {
     port: process.env.DB_PORT
   },
   // ...test and production configs...
+
+  // Digital Ocean Spaces configuration
+  doSpaces: {
+    accessKeyId: process.env.DO_SPACES_ACCESS_KEY,
+    secretAccessKey: process.env.DO_SPACES_SECRET_KEY,
+    region: process.env.DO_SPACES_REGION,
+    endpoint: process.env.DO_SPACES_ENDPOINT,
+    bucket: process.env.DO_SPACES_BUCKET
+  }
 };

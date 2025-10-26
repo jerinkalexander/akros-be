@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "ParkMate API",
-    "description": "API documentation for ParkMate backend with Parking and Shop features",
+    "description": "Complete API documentation for ParkMate backend with Parking, Shop, and Image features",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
@@ -21,7 +21,7 @@
       "name": "Auth",
       "item": [
         {
-          "name": "Send OTP",
+          "name": "Send OTP (User)",
           "request": {
             "method": "POST",
             "header": [
@@ -38,6 +38,27 @@
               "raw": "{{baseUrl}}/user/send-otp",
               "host": ["{{baseUrl}}"],
               "path": ["user", "send-otp"]
+            }
+          }
+        },
+        {
+          "name": "Send OTP (Shop)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phoneNumber\": \"9809664605\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/shop/send-otp",
+              "host": ["{{baseUrl}}"],
+              "path": ["shop", "send-otp"]
             }
           }
         },
@@ -342,130 +363,323 @@
             }
           ]
         },
+        {
+          "name": "Shops",
+          "item": [
             {
-              "name": "Shops",
-              "item": [
-                {
-                  "name": "Create Shop",
-                  "request": {
-                    "method": "POST",
-                    "header": [
-                      {
-                        "key": "Content-Type",
-                        "value": "application/json"
-                      },
-                      {
-                        "key": "Authorization",
-                        "value": "Bearer {{token}}"
-                      }
-                    ],
-                    "body": {
-                      "mode": "raw",
-                      "raw": "{\n  \"name\": \"Sample Shop\",\n  \"categoryTypeId\": 1,\n  \"ownerId\": 1,\n  \"address1\": \"123 Main St\",\n  \"location\": \"City\",\n  \"contactNumber\": \"1234567890\"\n}"
-                    },
-                    "url": {
-                      "raw": "{{baseUrl}}/admin/shops",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["admin", "shops"]
-                    }
+              "name": "Create Shop",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
                   }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Sample Shop\",\n  \"categoryTypeId\": 1,\n  \"ownerId\": 1,\n  \"address1\": \"123 Main St\",\n  \"location\": \"City\",\n  \"contactNumber\": \"1234567890\"\n}"
                 },
-                {
-                  "name": "Get All Shops",
-                  "request": {
-                    "method": "GET",
-                    "header": [
-                      {
-                        "key": "Authorization",
-                        "value": "Bearer {{token}}"
-                      }
-                    ],
-                    "url": {
-                      "raw": "{{baseUrl}}/admin/shops",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["admin", "shops"]
-                    }
-                  }
-                },
-                {
-                  "name": "Get Shop by ID",
-                  "request": {
-                    "method": "GET",
-                    "header": [
-                      {
-                        "key": "Authorization",
-                        "value": "Bearer {{token}}"
-                      }
-                    ],
-                    "url": {
-                      "raw": "{{baseUrl}}/admin/shops/:id",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["admin", "shops", ":id"],
-                      "variable": [
-                        {
-                          "key": "id",
-                          "value": "1"
-                        }
-                      ]
-                    }
-                  }
-                },
-                {
-                  "name": "Update Shop",
-                  "request": {
-                    "method": "PUT",
-                    "header": [
-                      {
-                        "key": "Content-Type",
-                        "value": "application/json"
-                      },
-                      {
-                        "key": "Authorization",
-                        "value": "Bearer {{token}}"
-                      }
-                    ],
-                    "body": {
-                      "mode": "raw",
-                      "raw": "{\n  \"name\": \"Updated Shop\"\n}"
-                    },
-                    "url": {
-                      "raw": "{{baseUrl}}/admin/shops/:id",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["admin", "shops", ":id"],
-                      "variable": [
-                        {
-                          "key": "id",
-                          "value": "1"
-                        }
-                      ]
-                    }
-                  }
-                },
-                {
-                  "name": "Delete Shop",
-                  "request": {
-                    "method": "DELETE",
-                    "header": [
-                      {
-                        "key": "Authorization",
-                        "value": "Bearer {{token}}"
-                      }
-                    ],
-                    "url": {
-                      "raw": "{{baseUrl}}/admin/shops/:id",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["admin", "shops", ":id"],
-                      "variable": [
-                        {
-                          "key": "id",
-                          "value": "1"
-                        }
-                      ]
-                    }
-                  }
+                "url": {
+                  "raw": "{{baseUrl}}/admin/shops",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "shops"]
                 }
-              ]
+              }
             },
+            {
+              "name": "Create Shop with Images",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "name",
+                      "value": "Sample Shop with Images",
+                      "type": "text"
+                    },
+                    {
+                      "key": "categoryTypeId",
+                      "value": "1",
+                      "type": "text"
+                    },
+                    {
+                      "key": "ownerId",
+                      "value": "1",
+                      "type": "text"
+                    },
+                    {
+                      "key": "address1",
+                      "value": "123 Main St",
+                      "type": "text"
+                    },
+                    {
+                      "key": "location",
+                      "value": "City",
+                      "type": "text"
+                    },
+                    {
+                      "key": "contactNumber",
+                      "value": "1234567890",
+                      "type": "text"
+                    },
+                    {
+                      "key": "images",
+                      "description": "Upload multiple images (max 10, 5MB each)",
+                      "type": "file"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/shops",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "shops"]
+                }
+              }
+            },
+            {
+              "name": "Get All Shops",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/shops?page=1&limit=10&search=",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "shops"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "search",
+                      "value": ""
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Get Shop by ID",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/shops/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "shops", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Update Shop",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Updated Shop\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/shops/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "shops", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Update Shop with Images",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "name",
+                      "value": "Updated Shop with Images",
+                      "type": "text"
+                    },
+                    {
+                      "key": "images",
+                      "description": "Upload additional images",
+                      "type": "file"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/shops/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "shops", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Delete Shop",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/shops/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "shops", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Shop Images",
+          "item": [
+            {
+              "name": "Upload Shop Images",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "image",
+                      "description": "Upload image (max 5MB)",
+                      "type": "file"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/shop-images/upload/:shopId",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "shop-images", "upload", ":shopId"],
+                  "variable": [
+                    {
+                      "key": "shopId",
+                      "value": "1"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Get Shop Images",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/shop-images/:shopId",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "shop-images", ":shopId"],
+                  "variable": [
+                    {
+                      "key": "shopId",
+                      "value": "1"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Delete Shop Image",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/shop-images/:imageId",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "shop-images", ":imageId"],
+                  "variable": [
+                    {
+                      "key": "imageId",
+                      "value": "1"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
         {
           "name": "Parkings",
           "item": [
@@ -505,9 +719,23 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{baseUrl}}/admin/parking",
+                  "raw": "{{baseUrl}}/admin/parking?page=1&limit=10&search=",
                   "host": ["{{baseUrl}}"],
-                  "path": ["admin", "parking"]
+                  "path": ["admin", "parking"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "search",
+                      "value": ""
+                    }
+                  ]
                 }
               }
             },
@@ -589,12 +817,139 @@
               }
             }
           ]
+        },
+        {
+          "name": "Bookings",
+          "item": [
+            {
+              "name": "Get All Bookings",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/bookings",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "bookings"]
+                }
+              }
+            },
+            {
+              "name": "Get Booking by ID",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/bookings/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "bookings", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Delete Booking",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/bookings/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "bookings", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
         }
       ]
     },
     {
       "name": "App",
       "item": [
+        {
+          "name": "Shops",
+          "item": [
+            {
+              "name": "Get All Shops",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/shops?page=1&limit=10&search=",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "shops"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "search",
+                      "value": ""
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Get Shop by ID",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/shops/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "shops", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
         {
           "name": "Shop Bookings",
           "item": [

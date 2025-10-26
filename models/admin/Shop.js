@@ -67,7 +67,7 @@ const Shop = sequelize.define('Shop', {
   timestamps: true,
 });
 
-// Association
+// Associations
 Shop.belongsTo(CategoryType, { foreignKey: 'categoryTypeId' });
 CategoryType.hasMany(Shop, { foreignKey: 'categoryTypeId' });
 

@@ -24,6 +24,7 @@ const categoryTypeRoutes = require('./routes/admin/categoryTypeRoute');
 const entityRoutes = require('./routes/admin/entityRoute');
 const bookingRoute = require('./routes/admin/bookingRoute');
 const parkingRoute = require('./routes/admin/parkingRoute');
+const shopImageRoute = require('./routes/admin/shopImageRoute');
 
 
 const sequelize = require('./config/db');
@@ -57,6 +58,7 @@ app.use('/api/parking-bookings', parkingBookingAppRoute);
 // Protected admin routes
 app.use('/admin/category-types', categoryTypeRoutes);
 app.use('/admin/shops', entityRoutes);
+app.use('/admin/shop-images', shopImageRoute);
 app.use('/admin/bookings', bookingRoute);
 app.use('/admin/parking', parkingRoute);
 

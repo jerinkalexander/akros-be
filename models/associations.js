@@ -1,6 +1,7 @@
 const User = require('./User');
 const Role = require('./Role');
 const Shop = require('./admin/Shop');
+const ShopImage = require('./admin/ShopImage');
 const Parking = require('./admin/Parking');
 const Booking = require('./app/Booking');
 const ParkingBooking = require('./app/ParkingBooking');
@@ -17,6 +18,10 @@ Shop.belongsTo(CategoryType, { foreignKey: 'categoryTypeId' });
 CategoryType.hasMany(Shop, { foreignKey: 'categoryTypeId' });
 Shop.belongsTo(User, { foreignKey: 'ownerId', as: 'owner' });
 User.hasMany(Shop, { foreignKey: 'ownerId' });
+
+// Shop Image associations
+Shop.hasMany(ShopImage, { foreignKey: 'shopId' });
+ShopImage.belongsTo(Shop, { foreignKey: 'shopId' });
 
 // Parking associations
 Parking.belongsTo(CategoryType, { foreignKey: 'categoryTypeId' });
