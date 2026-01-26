@@ -25,6 +25,8 @@ const entityRoutes = require('./routes/admin/entityRoute');
 const bookingRoute = require('./routes/admin/bookingRoute');
 const parkingRoute = require('./routes/admin/parkingRoute');
 const shopImageRoute = require('./routes/admin/shopImageRoute');
+const merchantRoute = require('./routes/admin/merchantRoute');
+const adminLoginRoute = require('./routes/admin/adminLoginRoute');
 
 
 const sequelize = require('./config/db');
@@ -42,11 +44,14 @@ app.use('/user', sendOtpRoute);
 app.use('/user', verifyOtpRoute);
 
 
-// Shop routes (public)
-app.use('/shop', sendOtpRoute);
-app.use('/shop', verifyOtpRoute);
+// Merchant routes (public)
+app.use('/merchant', sendOtpRoute);
+app.use('/merchant', verifyOtpRoute);
 
-// Routes that REQUIRE authentication
+// Admin login (public - no OTP needed)
+app.use('/admin', adminLoginRoute);
+
+
 
 // Protected API routes
 app.use('/api', authenticateToken);
@@ -56,17 +61,20 @@ app.use('/api/bookings', bookingAppRoute);
 app.use('/api/parking-bookings', parkingBookingAppRoute);
 
 // Protected admin routes
+app.use('/admin', authenticateToken);
 app.use('/admin/category-types', categoryTypeRoutes);
 app.use('/admin/shops', entityRoutes);
 app.use('/admin/shop-images', shopImageRoute);
 app.use('/admin/bookings', bookingRoute);
 app.use('/admin/parking', parkingRoute);
+app.use('/admin/merchants', merchantRoute);
+
 
 // Protected shop routes
-app.use('/shop', authenticateToken);
+app.use('/merchant', authenticateToken);
 
 
-const PORT = 3001;
+const PORT = 3000;
 
 // Start server (no sync)
 app.listen(PORT, () => console.log(`Server is running on http://localhost:${PORT}`));
