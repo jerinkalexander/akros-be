@@ -1,17 +1,21 @@
 {
   "info": {
-    "name": "ParkMate API (generated)",
-    "_postman_id": "parkmate-generated-001",
-    "description": "Auto-generated Postman collection from routes in the repository",
+    "name": "Akros API - Complete Collection",
+    "_postman_id": "akros-api-complete-v2",
+    "description": "Complete Akros API Collection - Organized by Route Structure",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
-    { "key": "baseUrl", "value": "http://localhost:3001", "type": "string" },
-    { "key": "token", "value": "", "type": "string" }
+    { "key": "baseUrl", "value": "http://localhost:3000", "type": "string" },
+    { "key": "token", "value": "", "type": "string" },
+    { "key": "userId", "value": "1", "type": "string" },
+    { "key": "shopId", "value": "1", "type": "string" },
+    { "key": "bookingId", "value": "1", "type": "string" },
+    { "key": "parkingId", "value": "1", "type": "string" }
   ],
   "item": [
     {
-      "name": "Health",
+      "name": "📍 SYSTEM",
       "item": [
         {
           "name": "Health Check",
@@ -24,146 +28,391 @@
       ]
     },
     {
-      "name": "Auth",
+      "name": "🔐 USER ROUTES",
       "item": [
         {
-          "name": "Send OTP (User)",
+          "name": "Send OTP",
           "request": {
             "method": "POST",
             "header": [ { "key": "Content-Type", "value": "application/json" } ],
-            "body": { "mode": "raw", "raw": "{\n  \"phoneNumber\": \"919809664605\"\n}" },
-            "url": { "raw": "{{baseUrl}}/user/send-otp", "host": ["{{baseUrl}}"], "path": ["user","send-otp"] }
+            "body": { "mode": "raw", "raw": "{\n  \"phoneNumber\": \"9809664605\"\n}" },
+            "url": { "raw": "{{baseUrl}}/user/send-otp", "host": ["{{baseUrl}}"], "path": ["user", "send-otp"] }
           }
         },
         {
-          "name": "Verify OTP (User)",
+          "name": "Verify OTP",
           "request": {
             "method": "POST",
             "header": [ { "key": "Content-Type", "value": "application/json" } ],
-            "body": { "mode": "raw", "raw": "{\n  \"phoneNumber\": \"919809664605\",\n  \"otp\": \"123456\"\n}" },
-            "url": { "raw": "{{baseUrl}}/user/verify-otp", "host": ["{{baseUrl}}"], "path": ["user","verify-otp"] }
-          }
-        },
-        {
-          "name": "Send OTP (Shop)",
-          "request": {
-            "method": "POST",
-            "header": [ { "key": "Content-Type", "value": "application/json" } ],
-            "body": { "mode": "raw", "raw": "{\n  \"phoneNumber\": \"919809664605\"\n}" },
-            "url": { "raw": "{{baseUrl}}/shop/send-otp", "host": ["{{baseUrl}}"], "path": ["shop","send-otp"] }
-          }
-        },
-        {
-          "name": "Verify OTP (Shop)",
-          "request": {
-            "method": "POST",
-            "header": [ { "key": "Content-Type", "value": "application/json" } ],
-            "body": { "mode": "raw", "raw": "{\n  \"phoneNumber\": \"919809664605\",\n  \"otp\": \"123456\"\n}" },
-            "url": { "raw": "{{baseUrl}}/shop/verify-otp", "host": ["{{baseUrl}}"], "path": ["shop","verify-otp"] }
+            "body": { "mode": "raw", "raw": "{\n  \"phoneNumber\": \"9809664605\",\n  \"otp\": \"123456\"\n}" },
+            "url": { "raw": "{{baseUrl}}/user/verify-otp", "host": ["{{baseUrl}}"], "path": ["user", "verify-otp"] }
           }
         }
       ]
     },
     {
-      "name": "App",
+      "name": "🛡️ MERCHANT ROUTES",
       "item": [
         {
-          "name": "User Profile - Create",
-          "request": {
-            "method": "POST",
-            "header": [ { "key": "Content-Type", "value": "application/json" }, { "key":"Authorization","value":"Bearer {{token}}" } ],
-            "body": { "mode": "raw", "raw": "{\n  \"name\": \"John Doe\",\n  \"carNumber\": \"ABC123\",\n  \"email\": \"john@example.com\",\n  \"place\": \"New York\",\n  \"phoneNumberId\": 1\n}" },
-            "url": { "raw": "{{baseUrl}}/api/user-profile", "host": ["{{baseUrl}}"], "path": ["api","user-profile"] }
-          }
+          "name": "Authentication",
+          "item": [
+            {
+              "name": "Send OTP",
+              "request": {
+                "method": "POST",
+                "header": [ { "key": "Content-Type", "value": "application/json" } ],
+                "body": { "mode": "raw", "raw": "{\n  \"phoneNumber\": \"9809664605\"\n}" },
+                "url": { "raw": "{{baseUrl}}/merchant/send-otp", "host": ["{{baseUrl}}"], "path": ["merchant", "send-otp"] }
+              }
+            },
+            {
+              "name": "Verify OTP",
+              "request": {
+                "method": "POST",
+                "header": [ { "key": "Content-Type", "value": "application/json" } ],
+                "body": { "mode": "raw", "raw": "{\n  \"phoneNumber\": \"9809664605\",\n  \"otp\": \"123456\"\n}" },
+                "url": { "raw": "{{baseUrl}}/merchant/verify-otp", "host": ["{{baseUrl}}"], "path": ["merchant", "verify-otp"] }
+              }
+            }
+          ]
         },
         {
-          "name": "User Profile - Get",
-          "request": { "method": "GET", "header": [ { "key":"Authorization","value":"Bearer {{token}}" } ], "url": { "raw": "{{baseUrl}}/api/user-profile", "host": ["{{baseUrl}}"], "path": ["api","user-profile"] } }
-        },
-        {
-          "name": "Save User Device Token",
-          "request": {
-            "method": "POST",
-            "header": [ { "key": "Content-Type", "value": "application/json" }, { "key":"Authorization","value":"Bearer {{token}}" } ],
-            "body": { "mode": "raw", "raw": "{\n  \"userId\": 1,\n  \"deviceType\": \"ios\",\n  \"pushToken\": \"sample_push_token_here\"\n}" },
-            "url": { "raw": "{{baseUrl}}/api/user-device-token", "host": ["{{baseUrl}}"], "path": ["api","user-device-token"] }
-          }
-        },
-        {
-          "name": "Send Push Notification",
-          "request": {
-            "method": "POST",
-            "header": [ { "key": "Content-Type", "value": "application/json" }, { "key":"Authorization","value":"Bearer {{token}}" } ],
-            "body": { "mode": "raw", "raw": "{\n  \"userId\": 1,\n  \"title\": \"Test Notification\",\n  \"body\": \"This is a test push notification\"\n}" },
-            "url": { "raw": "{{baseUrl}}/api/send-push-notification", "host": ["{{baseUrl}}"], "path": ["api","send-push-notification"] }
-          }
-        },
-        {
-          "name": "User Location - Save",
-          "request": {
-            "method": "POST",
-            "header": [ { "key": "Content-Type", "value": "application/json" }, { "key":"Authorization","value":"Bearer {{token}}" } ],
-            "body": { "mode": "raw", "raw": "{\n  \"latitude\": 40.7128,\n  \"longitude\": -74.0060,\n  \"locationName\": \"New York City\"\n}" },
-            "url": { "raw": "{{baseUrl}}/api/user-location", "host": ["{{baseUrl}}"], "path": ["api","user-location"] }
-          }
-        },
-        {
-          "name": "User Locations - Get All",
-          "request": { "method": "GET", "header": [ { "key":"Authorization","value":"Bearer {{token}}" } ], "url": { "raw": "{{baseUrl}}/api/user-locations", "host": ["{{baseUrl}}"], "path": ["api","user-locations"] } }
-        },
-        {
-          "name": "User Location - Get",
-          "request": { "method": "GET", "header": [ { "key":"Authorization","value":"Bearer {{token}}" } ], "url": { "raw": "{{baseUrl}}/api/user-location", "host": ["{{baseUrl}}"], "path": ["api","user-location"] } }
+          "name": "Shops",
+          "item": [
+            {
+              "name": "Get My Shops (List all shops owned by merchant)",
+              "request": {
+                "method": "GET",
+                "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "url": { "raw": "{{baseUrl}}/merchant/shops", "host": ["{{baseUrl}}"], "path": ["merchant", "shops"] }
+              }
+            },
+            {
+              "name": "Get Shop Details",
+              "request": {
+                "method": "GET",
+                "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "url": { "raw": "{{baseUrl}}/merchant/shops/{{shopId}}", "host": ["{{baseUrl}}"], "path": ["merchant", "shops", "{{shopId}}"] }
+              }
+            },
+            {
+              "name": "Update Shop",
+              "request": {
+                "method": "PUT",
+                "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "body": { "mode": "raw", "raw": "{\n  \"name\": \"Updated Shop Name\",\n  \"address1\": \"123 Main St\",\n  \"location\": \"Downtown\",\n  \"state\": \"NY\",\n  \"pinCode\": \"10001\"\n}" },
+                "url": { "raw": "{{baseUrl}}/merchant/shops/{{shopId}}", "host": ["{{baseUrl}}"], "path": ["merchant", "shops", "{{shopId}}"] }
+              }
+            }
+          ]
         }
       ]
     },
     {
-      "name": "App - Shops & Bookings",
+      "name": "👤 API ROUTES (Protected)",
       "item": [
         {
-          "name": "Shops - List",
-          "request": { "method": "GET", "header": [], "url": { "raw":"{{baseUrl}}/api/shops","host":["{{baseUrl}}"],"path":["api","shops"] } }
+          "name": "User Profile",
+          "item": [
+            {
+              "name": "Create Profile",
+              "request": {
+                "method": "POST",
+                "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "body": { "mode": "raw", "raw": "{\n  \"name\": \"John Doe\",\n  \"carNumber\": \"ABC123\",\n  \"email\": \"john@example.com\",\n  \"place\": \"New York\"\n}" },
+                "url": { "raw": "{{baseUrl}}/api/user-profile", "host": ["{{baseUrl}}"], "path": ["api", "user-profile"] }
+              }
+            },
+            {
+              "name": "Get Profile",
+              "request": {
+                "method": "GET",
+                "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "url": { "raw": "{{baseUrl}}/api/user-profile", "host": ["{{baseUrl}}"], "path": ["api", "user-profile"] }
+              }
+            },
+            {
+              "name": "Update Profile",
+              "request": {
+                "method": "PUT",
+                "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "body": { "mode": "raw", "raw": "{\n  \"name\": \"Jane Doe\",\n  \"carNumber\": \"XYZ789\",\n  \"email\": \"jane@example.com\",\n  \"place\": \"Los Angeles\"\n}" },
+                "url": { "raw": "{{baseUrl}}/api/user-profile", "host": ["{{baseUrl}}"], "path": ["api", "user-profile"] }
+              }
+            }
+          ]
         },
         {
-          "name": "Shops - Get by ID",
-          "request": { "method": "GET", "header": [], "url": { "raw":"{{baseUrl}}/api/shops/:id","host":["{{baseUrl}}"],"path":["api","shops",":id"], "variable":[{"key":"id","value":"1"}] } }
+          "name": "Shops",
+          "item": [
+            {
+              "name": "Get All Shops",
+              "request": {
+                "method": "GET",
+                "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "url": { "raw": "{{baseUrl}}/api/shops", "host": ["{{baseUrl}}"], "path": ["api", "shops"] }
+              }
+            },
+            {
+              "name": "Get Shop Details",
+              "request": {
+                "method": "GET",
+                "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "url": { "raw": "{{baseUrl}}/api/shops/{{shopId}}", "host": ["{{baseUrl}}"], "path": ["api", "shops", "{{shopId}}"] }
+              }
+            }
+          ]
         },
         {
-          "name": "Bookings - Create",
-          "request": { "method": "POST", "header": [ { "key":"Content-Type","value":"application/json" }, { "key":"Authorization","value":"Bearer {{token}}" } ], "body": { "mode":"raw","raw":"{\n  \"shopId\": 1,\n  \"bookingDate\": \"2025-10-25\",\n  \"bookingTime\": \"10:00\",\n  \"duration\": 2\n}" }, "url": { "raw":"{{baseUrl}}/api/bookings","host":["{{baseUrl}}"],"path":["api","bookings"] } }
+          "name": "Bookings",
+          "item": [
+            {
+              "name": "Get All Bookings",
+              "request": {
+                "method": "GET",
+                "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "url": { "raw": "{{baseUrl}}/api/bookings", "host": ["{{baseUrl}}"], "path": ["api", "bookings"] }
+              }
+            },
+            {
+              "name": "Create Booking",
+              "request": {
+                "method": "POST",
+                "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "body": { "mode": "raw", "raw": "{\n  \"shopId\": {{shopId}},\n  \"startTime\": \"2026-01-26T10:00:00Z\",\n  \"endTime\": \"2026-01-26T12:00:00Z\"\n}" },
+                "url": { "raw": "{{baseUrl}}/api/bookings", "host": ["{{baseUrl}}"], "path": ["api", "bookings"] }
+              }
+            },
+            {
+              "name": "Get Booking Details",
+              "request": {
+                "method": "GET",
+                "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "url": { "raw": "{{baseUrl}}/api/bookings/{{bookingId}}", "host": ["{{baseUrl}}"], "path": ["api", "bookings", "{{bookingId}}"] }
+              }
+            },
+            {
+              "name": "Update Booking (Cancel)",
+              "request": {
+                "method": "PUT",
+                "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "body": { "mode": "raw", "raw": "{\n  \"statusId\": 3\n}" },
+                "url": { "raw": "{{baseUrl}}/api/bookings/{{bookingId}}", "host": ["{{baseUrl}}"], "path": ["api", "bookings", "{{bookingId}}"] }
+              }
+            }
+          ]
         },
         {
-          "name": "Bookings - List",
-          "request": { "method": "GET", "header": [ { "key":"Authorization","value":"Bearer {{token}}" } ], "url": { "raw":"{{baseUrl}}/api/bookings","host":["{{baseUrl}}"],"path":["api","bookings"] } }
-        },
-        {
-          "name": "Parking Bookings - Create",
-          "request": { "method": "POST", "header": [ { "key":"Content-Type","value":"application/json" }, { "key":"Authorization","value":"Bearer {{token}}" } ], "body": { "mode":"raw","raw":"{\n  \"parkingId\": 1,\n  \"bookingDate\": \"2025-10-25\",\n  \"bookingTime\": \"10:00\",\n  \"duration\": 2\n}" }, "url": { "raw":"{{baseUrl}}/api/parking-bookings","host":["{{baseUrl}}"],"path":["api","parking-bookings"] } }
+          "name": "Parking Bookings",
+          "item": [
+            {
+              "name": "Get All Parking Bookings",
+              "request": {
+                "method": "GET",
+                "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "url": { "raw": "{{baseUrl}}/api/parking-bookings", "host": ["{{baseUrl}}"], "path": ["api", "parking-bookings"] }
+              }
+            },
+            {
+              "name": "Create Parking Booking",
+              "request": {
+                "method": "POST",
+                "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "body": { "mode": "raw", "raw": "{\n  \"parkingId\": {{parkingId}},\n  \"startTime\": \"2026-01-26T10:00:00Z\",\n  \"endTime\": \"2026-01-26T14:00:00Z\"\n}" },
+                "url": { "raw": "{{baseUrl}}/api/parking-bookings", "host": ["{{baseUrl}}"], "path": ["api", "parking-bookings"] }
+              }
+            },
+            {
+              "name": "Get Parking Booking Details",
+              "request": {
+                "method": "GET",
+                "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "url": { "raw": "{{baseUrl}}/api/parking-bookings/1", "host": ["{{baseUrl}}"], "path": ["api", "parking-bookings", "1"] }
+              }
+            }
+          ]
         }
       ]
     },
     {
-      "name": "Admin",
+      "name": "⚙️ ADMIN ROUTES",
       "item": [
         {
-          "name": "Category Types - Create",
-          "request": { "method": "POST", "header":[ { "key":"Content-Type","value":"application/json" }, { "key":"Authorization","value":"Bearer {{token}}" } ], "body":{ "mode":"raw","raw":"{\n  \"name\": \"Parking\"\n}" }, "url":{ "raw":"{{baseUrl}}/admin/category-types","host":["{{baseUrl}}"],"path":["admin","category-types"] } }
+          "name": "Authentication",
+          "item": [
+            {
+              "name": "Admin Login",
+              "request": {
+                "method": "POST",
+                "header": [ { "key": "Content-Type", "value": "application/json" } ],
+                "body": { "mode": "raw", "raw": "{\n  \"phoneNumber\": \"9809664605\",\n  \"password\": \"admin123\"\n}" },
+                "url": { "raw": "{{baseUrl}}/admin/login", "host": ["{{baseUrl}}"], "path": ["admin", "login"] }
+              }
+            }
+          ]
         },
         {
-          "name": "Shops (admin) - Create",
-          "request": { "method": "POST", "header":[ { "key":"Content-Type","value":"multipart/form-data" }, { "key":"Authorization","value":"Bearer {{token}}" } ], "url":{ "raw":"{{baseUrl}}/admin/shops","host":["{{baseUrl}}"],"path":["admin","shops"] } }
+          "name": "Merchants",
+          "item": [
+            {
+              "name": "Get All Merchants",
+              "request": {
+                "method": "GET",
+                "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "url": { "raw": "{{baseUrl}}/admin/merchants", "host": ["{{baseUrl}}"], "path": ["admin", "merchants"] }
+              }
+            }
+          ]
         },
         {
-          "name": "Shop Images - Upload",
-          "request": { "method": "POST", "header":[ { "key":"Authorization","value":"Bearer {{token}}" } ], "url":{ "raw":"{{baseUrl}}/admin/shop-images/upload/:shopId","host":["{{baseUrl}}"],"path":["admin","shop-images","upload",":shopId"], "variable":[{"key":"shopId","value":"1"}] } }
+          "name": "Shops",
+          "item": [
+            {
+              "name": "Create Shop",
+              "request": {
+                "method": "POST",
+                "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "body": { "mode": "raw", "raw": "{\n  \"name\": \"My Parking Shop\",\n  \"categoryTypeId\": 1,\n  \"ownerId\": 1,\n  \"address1\": \"123 Parking Ave\",\n  \"location\": \"Downtown\",\n  \"state\": \"NY\",\n  \"pinCode\": \"10001\",\n  \"contactNumber\": \"9809664605\",\n  \"email\": \"shop@example.com\",\n  \"latitude\": \"40.7128\",\n  \"longitude\": \"-74.0060\"\n}" },
+                "url": { "raw": "{{baseUrl}}/admin/shops", "host": ["{{baseUrl}}"], "path": ["admin", "shops"] }
+              }
+            },
+            {
+              "name": "Get All Shops",
+              "request": {
+                "method": "GET",
+                "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "url": { "raw": "{{baseUrl}}/admin/shops", "host": ["{{baseUrl}}"], "path": ["admin", "shops"] }
+              }
+            },
+            {
+              "name": "Get Shop Details",
+              "request": {
+                "method": "GET",
+                "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "url": { "raw": "{{baseUrl}}/admin/shops/{{shopId}}", "host": ["{{baseUrl}}"], "path": ["admin", "shops", "{{shopId}}"] }
+              }
+            },
+            {
+              "name": "Update Shop",
+              "request": {
+                "method": "PUT",
+                "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "body": { "mode": "raw", "raw": "{\n  \"name\": \"Updated Shop Name\",\n  \"address1\": \"456 New St\"\n}" },
+                "url": { "raw": "{{baseUrl}}/admin/shops/{{shopId}}", "host": ["{{baseUrl}}"], "path": ["admin", "shops", "{{shopId}}"] }
+              }
+            }
+          ]
         },
         {
-          "name": "Parkings - Create",
-          "request": { "method": "POST", "header":[ { "key":"Content-Type","value":"application/json" }, { "key":"Authorization","value":"Bearer {{token}}" } ], "body":{ "mode":"raw","raw":"{\n  \"name\": \"Main Parking\",\n  \"categoryTypeId\": 1\n}" }, "url":{ "raw":"{{baseUrl}}/admin/parking","host":["{{baseUrl}}"],"path":["admin","parking"] } }
+          "name": "Shop Images",
+          "item": [
+            {
+              "name": "Get Shop Images",
+              "request": {
+                "method": "GET",
+                "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "url": { "raw": "{{baseUrl}}/admin/shop-images/{{shopId}}", "host": ["{{baseUrl}}"], "path": ["admin", "shop-images", "{{shopId}}"] }
+              }
+            },
+            {
+              "name": "Upload Shop Image",
+              "request": {
+                "method": "POST",
+                "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "url": { "raw": "{{baseUrl}}/admin/shop-images/upload/{{shopId}}", "host": ["{{baseUrl}}"], "path": ["admin", "shop-images", "upload", "{{shopId}}"] }
+              }
+            },
+            {
+              "name": "Delete Shop Image",
+              "request": {
+                "method": "DELETE",
+                "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "url": { "raw": "{{baseUrl}}/admin/shop-images/1", "host": ["{{baseUrl}}"], "path": ["admin", "shop-images", "1"] }
+              }
+            }
+          ]
         },
         {
-          "name": "Admin Bookings - List",
-          "request": { "method": "GET", "header":[ { "key":"Authorization","value":"Bearer {{token}}" } ], "url":{ "raw":"{{baseUrl}}/admin/bookings","host":["{{baseUrl}}"],"path":["admin","bookings"] } }
+          "name": "Category Types",
+          "item": [
+            {
+              "name": "Get All Categories",
+              "request": {
+                "method": "GET",
+                "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "url": { "raw": "{{baseUrl}}/admin/category-types", "host": ["{{baseUrl}}"], "path": ["admin", "category-types"] }
+              }
+            },
+            {
+              "name": "Create Category",
+              "request": {
+                "method": "POST",
+                "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "body": { "mode": "raw", "raw": "{\n  \"name\": \"Parking\",\n  \"description\": \"Outdoor Parking\"\n}" },
+                "url": { "raw": "{{baseUrl}}/admin/category-types", "host": ["{{baseUrl}}"], "path": ["admin", "category-types"] }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Bookings",
+          "item": [
+            {
+              "name": "Get All Bookings",
+              "request": {
+                "method": "GET",
+                "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "url": { "raw": "{{baseUrl}}/admin/bookings", "host": ["{{baseUrl}}"], "path": ["admin", "bookings"] }
+              }
+            },
+            {
+              "name": "Get Booking Details",
+              "request": {
+                "method": "GET",
+                "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "url": { "raw": "{{baseUrl}}/admin/bookings/{{bookingId}}", "host": ["{{baseUrl}}"], "path": ["admin", "bookings", "{{bookingId}}"] }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Parking",
+          "item": [
+            {
+              "name": "Create Parking",
+              "request": {
+                "method": "POST",
+                "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "body": { "mode": "raw", "raw": "{\n  \"name\": \"Downtown Parking\",\n  \"shopId\": 1,\n  \"ownerId\": 1,\n  \"totalSlots\": 50,\n  \"location\": \"Downtown\",\n  \"latitude\": \"40.7128\",\n  \"longitude\": \"-74.0060\"\n}" },
+                "url": { "raw": "{{baseUrl}}/admin/parking", "host": ["{{baseUrl}}"], "path": ["admin", "parking"] }
+              }
+            },
+            {
+              "name": "Get All Parking",
+              "request": {
+                "method": "GET",
+                "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "url": { "raw": "{{baseUrl}}/admin/parking", "host": ["{{baseUrl}}"], "path": ["admin", "parking"] }
+              }
+            },
+            {
+              "name": "Get Parking Details",
+              "request": {
+                "method": "GET",
+                "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "url": { "raw": "{{baseUrl}}/admin/parking/{{parkingId}}", "host": ["{{baseUrl}}"], "path": ["admin", "parking", "{{parkingId}}"] }
+              }
+            },
+            {
+              "name": "Update Parking",
+              "request": {
+                "method": "PUT",
+                "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "body": { "mode": "raw", "raw": "{\n  \"name\": \"Updated Parking Name\",\n  \"totalSlots\": 60\n}" },
+                "url": { "raw": "{{baseUrl}}/admin/parking/{{parkingId}}", "host": ["{{baseUrl}}"], "path": ["admin", "parking", "{{parkingId}}"] }
+              }
+            }
+          ]
         }
       ]
     }
