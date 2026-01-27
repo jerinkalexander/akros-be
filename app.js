@@ -19,6 +19,7 @@ const entityAppRoutes = require('./routes/app/entityRoute');
 const bookingAppRoute = require('./routes/app/bookingRoute');
 const parkingBookingAppRoute = require('./routes/app/parkingBookingRoute');
 
+
 //Admin routes
 const categoryTypeRoutes = require('./routes/admin/categoryTypeRoute');
 const entityRoutes = require('./routes/admin/entityRoute');
@@ -26,7 +27,10 @@ const bookingRoute = require('./routes/admin/bookingRoute');
 const parkingRoute = require('./routes/admin/parkingRoute');
 const shopImageRoute = require('./routes/admin/shopImageRoute');
 const merchantRoute = require('./routes/admin/merchantRoute');
-const adminLoginRoute = require('./routes/admin/adminLoginRoute');
+const adminLoginRoute = require('./routes/admin/loginRoute');
+
+//Merchant routes
+const shopRoute = require('./routes/merchants/shopRoute');
 
 
 const sequelize = require('./config/db');
@@ -43,15 +47,12 @@ app.get('/health', (req, res) => {
 app.use('/user', sendOtpRoute);
 app.use('/user', verifyOtpRoute);
 
-
 // Merchant routes (public)
 app.use('/merchant', sendOtpRoute);
 app.use('/merchant', verifyOtpRoute);
 
 // Admin login (public - no OTP needed)
 app.use('/admin', adminLoginRoute);
-
-
 
 // Protected API routes
 app.use('/api', authenticateToken);
@@ -69,9 +70,8 @@ app.use('/admin/bookings', bookingRoute);
 app.use('/admin/parking', parkingRoute);
 app.use('/admin/merchants', merchantRoute);
 
-
-// Protected shop routes
-app.use('/merchant', authenticateToken);
+app.use('/merchant/', authenticateToken);
+app.use('/merchant/shops', shopRoute);
 
 
 const PORT = 3000;
