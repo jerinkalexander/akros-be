@@ -11,7 +11,7 @@ const generateOTP = '123456'; // For testing purposes, fixed OTP
 
 router.post('/send-otp', async (req, res) => {
   const { phoneNumber } = req.body;
-  const role = req.baseUrl.includes('/user') ? 'user' : 'shop';
+  const role = req.baseUrl.includes('/user') ? 'user' : 'merchant';
   const otp = generateOTP;
   const from = "VonageOTP"; // Sender ID
   const to = "919809664605";
