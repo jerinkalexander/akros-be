@@ -28,6 +28,7 @@ const parkingRoute = require('./routes/admin/parkingRoute');
 const shopImageRoute = require('./routes/admin/shopImageRoute');
 const merchantRoute = require('./routes/admin/merchantRoute');
 const adminLoginRoute = require('./routes/admin/loginRoute');
+const adminRegisterRoute = require('./routes/admin/registerRoute');
 
 //Merchant routes
 const shopRoute = require('./routes/merchants/shopRoute');
@@ -51,8 +52,10 @@ app.use('/user', verifyOtpRoute);
 app.use('/merchant', sendOtpRoute);
 app.use('/merchant', verifyOtpRoute);
 
-// Admin login (public - no OTP needed)
-app.use('/admin', adminLoginRoute);
+// Admin auth routes (public - no token needed)
+// Use specific routes to avoid catching protected admin routes
+app.use('/admin/login', adminLoginRoute);
+app.use('/admin/register', adminRegisterRoute);
 
 // Protected API routes
 app.use('/api', authenticateToken);
@@ -61,7 +64,7 @@ app.use('/api', entityAppRoutes);
 app.use('/api/bookings', bookingAppRoute);
 app.use('/api/parking-bookings', parkingBookingAppRoute);
 
-// Protected admin routes
+// Protected admin routes (all other /admin/* routes require auth)
 app.use('/admin', authenticateToken);
 app.use('/admin/category-types', categoryTypeRoutes);
 app.use('/admin/shops', entityRoutes);

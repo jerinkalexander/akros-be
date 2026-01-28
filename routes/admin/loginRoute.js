@@ -6,7 +6,7 @@ const Role = require('../../models/Role');
 const { generateToken } = require('../../utils/jwt');
 
 // ✅ Admin Login - POST /admin/login
-router.post('/login', async (req, res) => {
+router.post('/', async (req, res) => {
   try {
     const { phoneNumber, password } = req.body;
 
@@ -28,6 +28,11 @@ router.post('/login', async (req, res) => {
     // Check if user is admin
     if (admin.Role.name !== 'admin') {
       return res.status(403).json({ error: 'Only admin users can login here' });
+    }
+
+    // Check if password exists in database
+    if (!admin.password) {
+      return res.status(401).json({ error: 'Admin user password not set. Please contact administrator to reset password.' });
     }
 
     // Check password
