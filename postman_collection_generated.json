@@ -241,6 +241,15 @@
           "name": "Authentication",
           "item": [
             {
+              "name": "Admin Register",
+              "request": {
+                "method": "POST",
+                "header": [ { "key": "Content-Type", "value": "application/json" } ],
+                "body": { "mode": "raw", "raw": "{\n  \"phoneNumber\": \"9809664605\",\n  \"password\": \"admin123\"\n}" },
+                "url": { "raw": "{{baseUrl}}/admin/register", "host": ["{{baseUrl}}"], "path": ["admin", "register"] }
+              }
+            },
+            {
               "name": "Admin Login",
               "request": {
                 "method": "POST",
@@ -300,6 +309,22 @@
                 "body": { "mode": "raw", "raw": "{\n  \"name\": \"Updated Shop Name\",\n  \"address1\": \"456 New St\"\n}" },
                 "url": { "raw": "{{baseUrl}}/admin/shops/{{shopId}}", "host": ["{{baseUrl}}"], "path": ["admin", "shops", "{{shopId}}"] }
               }
+            },
+            {
+              "name": "Delete Shop",
+              "request": {
+                "method": "DELETE",
+                "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "url": { "raw": "{{baseUrl}}/admin/shops/{{shopId}}", "host": ["{{baseUrl}}"], "path": ["admin", "shops", "{{shopId}}"] }
+              }
+            },
+            {
+              "name": "Get Shops by Category",
+              "request": {
+                "method": "GET",
+                "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "url": { "raw": "{{baseUrl}}/admin/shops/category/{{categoryTypeId}}", "host": ["{{baseUrl}}"], "path": ["admin", "shops", "category", "{{categoryTypeId}}"] }
+              }
             }
           ]
         },
@@ -351,6 +376,31 @@
                 "body": { "mode": "raw", "raw": "{\n  \"name\": \"Parking\",\n  \"description\": \"Outdoor Parking\"\n}" },
                 "url": { "raw": "{{baseUrl}}/admin/category-types", "host": ["{{baseUrl}}"], "path": ["admin", "category-types"] }
               }
+            },
+            {
+              "name": "Get Category Details",
+              "request": {
+                "method": "GET",
+                "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "url": { "raw": "{{baseUrl}}/admin/category-types/{{categoryTypeId}}", "host": ["{{baseUrl}}"], "path": ["admin", "category-types", "{{categoryTypeId}}"] }
+              }
+            },
+            {
+              "name": "Update Category",
+              "request": {
+                "method": "PUT",
+                "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "body": { "mode": "raw", "raw": "{\n  \"name\": \"Updated Category\"\n}" },
+                "url": { "raw": "{{baseUrl}}/admin/category-types/{{categoryTypeId}}", "host": ["{{baseUrl}}"], "path": ["admin", "category-types", "{{categoryTypeId}}"] }
+              }
+            },
+            {
+              "name": "Delete Category",
+              "request": {
+                "method": "DELETE",
+                "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "url": { "raw": "{{baseUrl}}/admin/category-types/{{categoryTypeId}}", "host": ["{{baseUrl}}"], "path": ["admin", "category-types", "{{categoryTypeId}}"] }
+              }
             }
           ]
         },
@@ -372,6 +422,14 @@
                 "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
                 "url": { "raw": "{{baseUrl}}/admin/bookings/{{bookingId}}", "host": ["{{baseUrl}}"], "path": ["admin", "bookings", "{{bookingId}}"] }
               }
+            },
+            {
+              "name": "Delete Booking",
+              "request": {
+                "method": "DELETE",
+                "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "url": { "raw": "{{baseUrl}}/admin/bookings/{{bookingId}}", "host": ["{{baseUrl}}"], "path": ["admin", "bookings", "{{bookingId}}"] }
+              }
             }
           ]
         },
@@ -383,7 +441,7 @@
               "request": {
                 "method": "POST",
                 "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{token}}" } ],
-                "body": { "mode": "raw", "raw": "{\n  \"name\": \"Downtown Parking\",\n  \"shopId\": 1,\n  \"ownerId\": 1,\n  \"totalSlots\": 50,\n  \"location\": \"Downtown\",\n  \"latitude\": \"40.7128\",\n  \"longitude\": \"-74.0060\"\n}" },
+                "body": { "mode": "raw", "raw": "{\n  \"name\": \"Downtown Parking\",\n  \"categoryTypeId\": 1,\n  \"ownerId\": 1,\n  \"address1\": \"123 Parking Ave\",\n  \"location\": \"Downtown\",\n  \"state\": \"NY\",\n  \"pinCode\": \"10001\",\n  \"contactNumber\": \"9809664605\",\n  \"email\": \"parking@example.com\",\n  \"latitude\": \"40.7128\",\n  \"longitude\": \"-74.0060\",\n  \"totalSlots\": 50,\n  \"hourlyRate\": 10,\n  \"dailyRate\": 100\n}" },
                 "url": { "raw": "{{baseUrl}}/admin/parking", "host": ["{{baseUrl}}"], "path": ["admin", "parking"] }
               }
             },
@@ -410,6 +468,22 @@
                 "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{token}}" } ],
                 "body": { "mode": "raw", "raw": "{\n  \"name\": \"Updated Parking Name\",\n  \"totalSlots\": 60\n}" },
                 "url": { "raw": "{{baseUrl}}/admin/parking/{{parkingId}}", "host": ["{{baseUrl}}"], "path": ["admin", "parking", "{{parkingId}}"] }
+              }
+            },
+            {
+              "name": "Delete Parking",
+              "request": {
+                "method": "DELETE",
+                "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "url": { "raw": "{{baseUrl}}/admin/parking/{{parkingId}}", "host": ["{{baseUrl}}"], "path": ["admin", "parking", "{{parkingId}}"] }
+              }
+            },
+            {
+              "name": "Get Parking by Category",
+              "request": {
+                "method": "GET",
+                "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "url": { "raw": "{{baseUrl}}/admin/parking/category/{{categoryTypeId}}", "host": ["{{baseUrl}}"], "path": ["admin", "parking", "category", "{{categoryTypeId}}"] }
               }
             }
           ]
