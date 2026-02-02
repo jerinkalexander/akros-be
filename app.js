@@ -29,6 +29,7 @@ const shopImageRoute = require('./routes/admin/shopImageRoute');
 const merchantRoute = require('./routes/admin/merchantRoute');
 const adminLoginRoute = require('./routes/admin/loginRoute');
 const adminRegisterRoute = require('./routes/admin/registerRoute');
+const adminUserRoute = require('./routes/admin/userRoute');
 
 //Merchant routes
 const shopRoute = require('./routes/merchants/shopRoute');
@@ -72,6 +73,7 @@ app.use('/admin/shop-images', shopImageRoute);
 app.use('/admin/bookings', bookingRoute);
 app.use('/admin/parking', parkingRoute);
 app.use('/admin/merchants', merchantRoute);
+app.use('/admin/users', adminUserRoute);
 
 app.use('/merchant/', authenticateToken);
 app.use('/merchant/shops', shopRoute);
