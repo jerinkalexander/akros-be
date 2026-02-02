@@ -270,6 +270,35 @@
                 "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
                 "url": { "raw": "{{baseUrl}}/admin/merchants", "host": ["{{baseUrl}}"], "path": ["admin", "merchants"] }
               }
+            },
+            {
+              "name": "Delete Merchant",
+              "request": {
+                "method": "DELETE",
+                "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "url": { "raw": "{{baseUrl}}/admin/merchants/{{userId}}", "host": ["{{baseUrl}}"], "path": ["admin", "merchants", "{{userId}}"] }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Users",
+          "item": [
+            {
+              "name": "Get All Users",
+              "request": {
+                "method": "GET",
+                "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "url": { "raw": "{{baseUrl}}/admin/users", "host": ["{{baseUrl}}"], "path": ["admin", "users"] }
+              }
+            },
+            {
+              "name": "Delete User",
+              "request": {
+                "method": "DELETE",
+                "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "url": { "raw": "{{baseUrl}}/admin/users/{{userId}}", "host": ["{{baseUrl}}"], "path": ["admin", "users", "{{userId}}"] }
+              }
             }
           ]
         },
