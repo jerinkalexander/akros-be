@@ -58,7 +58,7 @@
             "url": {
               "raw": "{{baseUrl}}/shop/send-otp",
               "host": ["{{baseUrl}}"],
-              "path": ["shop", "send-otp"]
+"path": ["merchant", "send-otp"]
             }
           }
         },
