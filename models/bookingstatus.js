@@ -12,7 +12,7 @@ const BookingStatus = sequelize.define('BookingStatus', {
     allowNull: true,
   },
 }, {
-  tableName: 'booking_statuses',
+  tableName: 'booking_status',
   timestamps: true,
 });
 

@@ -33,9 +33,23 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
+      duration: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+      },
       note: {
         type: Sequelize.TEXT,
         allowNull: true
+      },
+      statusId: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        references: {
+          model: 'booking_status',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL'
       },
       createdAt: {
         type: Sequelize.DATE,

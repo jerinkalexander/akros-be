@@ -77,8 +77,8 @@ router.get('/:id', auth, async (req, res) => {
   }
 });
 
-// ✅ Delete a booking (only if it belongs to logged-in user)
-router.delete('/:id', auth, async (req, res) => {
+// ✅ Cancel a booking (only if it belongs to logged-in user)
+router.put('/:id', auth, async (req, res) => {
   try {
     const bookingId = req.params.id;
     const userId = req.user.userId; // Set by your auth middleware
@@ -95,8 +95,16 @@ router.delete('/:id', auth, async (req, res) => {
       return res.status(404).json({ error: 'Booking not found or not authorized' });
     }
 
-    await booking.destroy(); // Delete the booking
-    res.json({ message: 'Booking deleted successfully' });
+    // Instead of deleting, set status to 'cancelled'
+    const cancelledStatus = await BookingStatus.findOne({ where: { name: 'cancelled' } });
+    if (!cancelledStatus) {
+      return res.status(500).json({ error: 'Cancelled status not found' });
+    }
+
+    booking.statusId = cancelledStatus.id;
+    await booking.save();
+
+    res.json({ message: 'Booking cancelled successfully', data: booking });
 
   } catch (err) {
     res.status(500).json({ error: err.message });

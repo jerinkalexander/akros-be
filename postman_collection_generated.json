@@ -105,6 +105,43 @@
               }
             }
           ]
+        },
+        {
+          "name": "Bookings",
+          "item": [
+            {
+              "name": "List Bookings (All shops owned by merchant)",
+              "request": {
+                "method": "GET",
+                "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "url": { "raw": "{{baseUrl}}/merchant/bookings", "host": ["{{baseUrl}}"], "path": ["merchant", "bookings"] }
+              }
+            },
+            {
+              "name": "Get Booking Details",
+              "request": {
+                "method": "GET",
+                "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "url": { "raw": "{{baseUrl}}/merchant/bookings/{{bookingId}}", "host": ["{{baseUrl}}"], "path": ["merchant", "bookings", "{{bookingId}}"] }
+              }
+            },
+            {
+              "name": "Accept Booking",
+              "request": {
+                "method": "POST",
+                "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "url": { "raw": "{{baseUrl}}/merchant/bookings/{{bookingId}}/accept", "host": ["{{baseUrl}}"], "path": ["merchant", "bookings", "{{bookingId}}", "accept"] }
+              }
+            },
+            {
+              "name": "Cancel Booking",
+              "request": {
+                "method": "POST",
+                "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+                "url": { "raw": "{{baseUrl}}/merchant/bookings/{{bookingId}}/cancel", "host": ["{{baseUrl}}"], "path": ["merchant", "bookings", "{{bookingId}}", "cancel"] }
+              }
+            }
+          ]
         }
       ]
     },
