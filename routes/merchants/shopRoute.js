@@ -7,7 +7,7 @@ const ShopImage = require('../../models/admin/ShopImage');
 // ✅ GET all shops for logged-in merchant (owner)
 router.get('/', async (req, res) => {
   try {
-    const merchantId = req.user.id; // Get merchant ID from JWT token
+    const merchantId = req.user.userId; // Get merchant ID from JWT token
 
     // Fetch all shops where ownerId matches the merchant's ID
     const shops = await Shop.findAll({
@@ -47,7 +47,7 @@ router.get('/', async (req, res) => {
 // ✅ GET single shop by ID (verify it belongs to merchant)
 router.get('/:shopId', async (req, res) => {
   try {
-    const merchantId = req.user.id;
+    const merchantId = req.user.userId;
     const { shopId } = req.params;
 
     const shop = await Shop.findOne({
@@ -86,7 +86,7 @@ router.get('/:shopId', async (req, res) => {
 // ✅ UPDATE shop (merchant can only update their own shops)
 router.put('/:shopId', async (req, res) => {
   try {
-    const merchantId = req.user.id;
+    const merchantId = req.user.userId;
     const { shopId } = req.params;
 
     // Verify merchant owns this shop

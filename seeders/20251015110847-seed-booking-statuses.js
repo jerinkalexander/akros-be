@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.bulkInsert('booking_statuses', [
+    await queryInterface.bulkInsert('booking_status', [
       {
         name: 'pending',
         description: 'Booking is pending confirmation',
@@ -32,6 +32,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('booking_statuses', null, {});
+    await queryInterface.bulkDelete('booking_status', null, {});
   }
 };
