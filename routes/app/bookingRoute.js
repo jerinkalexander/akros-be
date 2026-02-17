@@ -3,6 +3,7 @@ const router = express.Router();
 const Booking = require('../../models/app/Booking');
 const Shop = require('../../models/admin/Shop');
 const BookingStatus = require('../../models/bookingstatus');
+const { Op } = require('sequelize');
 const auth = require('../../middleware/auth'); // Sets req.user (e.g., users.id)
 
 // ✅ Create a booking (for logged-in user)
@@ -20,6 +21,23 @@ router.post('/', auth, async (req, res) => {
     const defaultStatus = await BookingStatus.findOne({ where: { name: 'pending' } });
     if (!defaultStatus) {
       return res.status(500).json({ error: 'Default booking status not found' });
+    }
+
+    // Prevent duplicate bookings: same shop, same date, same time, same user
+    const cancelledStatus = await BookingStatus.findOne({ where: { name: 'cancelled' } });
+    const conflictWhere = {
+      shopId,
+      userId: req.user.userId,
+      bookingDate,
+      bookingTime
+    };
+    if (cancelledStatus) {
+      conflictWhere.statusId = { [Op.ne]: cancelledStatus.id };
+    }
+
+    const existing = await Booking.findOne({ where: conflictWhere });
+    if (existing) {
+      return res.status(409).json({ error: 'This slot is already booked by you' });
     }
 
     // Create booking with logged-in user's ID and default status
@@ -43,8 +61,25 @@ router.post('/', auth, async (req, res) => {
 // ✅ Get all bookings of logged-in user
 router.get('/', auth, async (req, res) => {
   try {
+    // Base where clause for user
+    const where = { userId: req.user.userId };
+
+    // Optional: show only upcoming bookings when ?upcoming=true
+    const upcomingParam = (req.query.upcoming || '').toString().toLowerCase();
+    if (upcomingParam === 'true' || upcomingParam === '1' || upcomingParam === 'yes') {
+      const now = new Date();
+      const dateOnly = now.toISOString().slice(0, 10); // YYYY-MM-DD (UTC)
+      const pad = (n) => (n < 10 ? '0' + n : '' + n);
+      const timeNow = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+
+      where[Op.or] = [
+        { bookingDate: { [Op.gt]: dateOnly } },
+        { [Op.and]: [{ bookingDate: dateOnly }, { bookingTime: { [Op.gte]: timeNow } }] }
+      ];
+    }
+
     const bookings = await Booking.findAll({
-      where: { userId: req.user.userId },
+      where,
       include: [{ model: Shop }],
       order: [['createdAt', 'DESC']]
     });
