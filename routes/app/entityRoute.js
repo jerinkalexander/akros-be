@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Shop = require('../../models/admin/Shop');
 const CategoryType = require('../../models/admin/CategoryType');
+const { Op } = require('sequelize');
 
 // ✅ LIST All Shops with Pagination and Search
 router.get('/shops', async (req, res) => {
@@ -17,9 +18,18 @@ router.get('/shops', async (req, res) => {
     // Build where clause for search
     const where = search
       ? {
-          name: { [require('sequelize').Op.like]: `%${search}%` }
+          name: { [Op.like]: `%${search}%` }
         }
       : {};
+
+    // Optional parking filter: if parking=true => only categoryTypeId 1
+    // if parking=false => exclude categoryTypeId 1
+    const parkingParam = (req.query.parking || '').toString().toLowerCase();
+    if (parkingParam === 'true' || parkingParam === '1' || parkingParam === 'yes') {
+      where.categoryTypeId = 1;
+    } else if (parkingParam === 'false' || parkingParam === '0' || parkingParam === 'no') {
+      where.categoryTypeId = { [Op.ne]: 1 };
+    }
 
     const { count, rows: shops } = await Shop.findAndCountAll({
       where,
